@@ -351,19 +351,23 @@
       return result.replace("?raw=true", "");
     }
 
-    function resetForm() {
-      selectedWord = null;
-      formTitle.textContent = "Новое слово";
-      georgianInput.value = "";
-      russianInput.value = "";
-      categoryInput.value = "basic";
-      imageUrlInput.value = "";
-      previewImage.style.display = "none";
-      previewImage.src = "";
-      previewMessage.textContent = "";
-      previewMessage.className = "message";
-      renderList();
-    }
+function resetForm() {
+  selectedWord = null;
+  formTitle.textContent = "Новое слово";
+  georgianInput.value = "";
+  russianInput.value = "";
+  categoryInput.value = "basic";
+
+  imageUrlInput.value =
+    "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/фото.jpg";
+
+  previewImage.style.display = "none";
+  previewImage.src = "";
+  previewMessage.textContent = "";
+  previewMessage.className = "message";
+
+  renderList();
+}
 
     function fillForm(word) {
       selectedWord = word;
