@@ -1,5 +1,5 @@
 {
-  "version": 4,
+  "version": 5,
   "words": [
     {
       "id": 1,
@@ -10,7 +10,7 @@
     },
     {
       "id": 2,
-      "georgian": "წყალი",
+      "georgian": "წყალი სატესტო",
       "russian": "вода",
       "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/Hand.jpg",
       "category": "basic"
