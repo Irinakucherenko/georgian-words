@@ -372,11 +372,16 @@
       russianInput.value = word.russian || "";
       categoryInput.value = word.category || "basic";
       imageUrlInput.value = word.imageUrl || "";
-      previewImage.style.display = "none";
-      previewImage.src = "";
       previewMessage.textContent = "";
       previewMessage.className = "message";
       renderList();
+
+      if (imageUrlInput.value.trim()) {
+        showPreview();
+      } else {
+        previewImage.style.display = "none";
+        previewImage.src = "";
+      }
     }
 
     function getTimeValue(word) {
@@ -471,21 +476,20 @@
     }
 
     function showPreview() {
-      const rawUrl = normalizeGitHubImageUrl(imageUrlInput.value);
+      const rawUrl = normalizeGitHubImageUrl(imageUrlInput.value).trim();
 
       previewImage.style.display = "none";
+      previewImage.src = "";
       previewMessage.textContent = "";
       previewMessage.className = "message";
 
       if (!rawUrl) {
-        previewMessage.textContent = "Сначала вставь ссылку на картинку.";
-        previewMessage.className = "message error";
         return;
       }
 
       previewImage.onload = () => {
-        previewMessage.textContent = "Картинка загружается правильно.";
-        previewMessage.className = "message success";
+        previewMessage.textContent = "";
+        previewMessage.className = "message";
         previewImage.style.display = "block";
       };
 
@@ -607,6 +611,8 @@ ${imageUrl}`;
     searchInput.addEventListener("input", renderList);
     sortSelect.addEventListener("change", renderList);
     previewBtn.addEventListener("click", showPreview);
+    imageUrlInput.addEventListener("input", showPreview);
+    imageUrlInput.addEventListener("change", showPreview);
     newBtn.addEventListener("click", resetForm);
     refreshBtn.addEventListener("click", loadWords);
     saveBtn.addEventListener("click", openEditIssue);
