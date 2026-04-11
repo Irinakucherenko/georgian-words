@@ -26,7 +26,7 @@ jobs:
             const body = context.payload.issue.body || '';
 
             function extractField(label) {
-              const regex = new RegExp(`### ${label}\\s*\\n\\n(.+?)(\\n\\n###|$)`, 's');
+              const regex = new RegExp(`### ${label}\\s*\\n\\n([\\s\\S]*?)(?=\\n\\n###|$)`, 's');
               const match = body.match(regex);
               return match ? match[1].trim() : '';
             }
@@ -54,17 +54,19 @@ jobs:
               ? Math.max(...data.words.filter(Boolean).map(w => Number(w.id) || 0)) + 1
               : 1;
 
-            data.words.push({
+            const newWord = {
               id: nextId,
               georgian,
               russian,
               imageUrl,
-              category
-            });
+              category,
+              createdAt: new Date().toISOString()
+            };
 
+            data.words.push(newWord);
             data.version = (Number(data.version) || 0) + 1;
 
-            fs.writeFileSync(filePath, JSON.stringify(data, null, 2), 'utf8');
+            fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n', 'utf8');
 
       - name: Commit changes
         run: |
