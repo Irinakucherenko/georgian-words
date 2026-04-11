@@ -1,0 +1,11 @@
+name: Delete Word
+description: Delete Georgian word
+title: "[DELETE_WORD]"
+body:
+  - type: input
+    id: georgian
+    attributes:
+      label: Georgian Word
+      description: Exact Georgian word to delete
+    validations:
+      required: true
