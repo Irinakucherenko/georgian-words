@@ -1,0 +1,43 @@
+name: Edit Word
+description: Edit existing Georgian word
+title: "[EDIT_WORD]"
+body:
+  - type: input
+    id: old_georgian
+    attributes:
+      label: Old Georgian Word
+      description: Existing Georgian word to replace
+    validations:
+      required: true
+
+  - type: input
+    id: new_georgian
+    attributes:
+      label: New Georgian Word
+    validations:
+      required: true
+
+  - type: input
+    id: russian
+    attributes:
+      label: Russian Translation
+    validations:
+      required: true
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: Category
+      options:
+        - basic
+        - body
+        - food
+    validations:
+      required: true
+
+  - type: input
+    id: imageurl
+    attributes:
+      label: Image URL
+    validations:
+      required: true
