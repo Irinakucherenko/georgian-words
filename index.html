@@ -287,8 +287,6 @@
           <b>Сохранить изменения</b> открывает issue на редактирование
           <br>
           <b>Удалить выбранное</b> открывает issue на удаление
-          <br><br>
-          На следующем шаге подключим workflow для редактирования выбранного слова.
         </div>
       </div>
     </main>
@@ -297,7 +295,6 @@
   <script>
     const repoOwner = "Irinakucherenko";
     const repoName = "georgian-words";
-    const wordsJsonUrl = `https://raw.githubusercontent.com/${repoOwner}/${repoName}/main/words.json?t=${Date.now()}`;
 
     const wordList = document.getElementById("wordList");
     const searchInput = document.getElementById("searchInput");
@@ -332,11 +329,7 @@
           .replace("/blob/", "/");
       }
 
-      if (result.endsWith("?raw=true")) {
-        result = result.replace("?raw=true", "");
-      }
-
-      return result;
+      return result.replace("?raw=true", "");
     }
 
     function resetForm() {
@@ -347,9 +340,7 @@
       categoryInput.value = "basic";
       imageUrlInput.value = "";
       previewImage.style.display = "none";
-      previewImage.src = "";
       previewMessage.textContent = "";
-      previewMessage.className = "message";
       renderList();
     }
 
@@ -361,20 +352,22 @@
       categoryInput.value = word.category || "basic";
       imageUrlInput.value = word.imageUrl || "";
       previewImage.style.display = "none";
-      previewImage.src = "";
       previewMessage.textContent = "";
-      previewMessage.className = "message";
       renderList();
     }
 
     function renderList() {
       const query = searchInput.value.trim().toLowerCase();
 
-      filteredWords = allWords.filter(word => {
-        const ge = (word.georgian || "").toLowerCase();
-        const ru = (word.russian || "").toLowerCase();
-        return ge.includes(query) || ru.includes(query);
-      });
+      filteredWords = allWords
+        .filter(word => {
+          const ge = (word.georgian || "").toLowerCase();
+          const ru = (word.russian || "").toLowerCase();
+          return ge.includes(query) || ru.includes(query);
+        })
+        .sort((a, b) =>
+          (a.georgian || "").localeCompare((b.georgian || ""), "ka")
+        );
 
       if (filteredWords.length === 0) {
         wordList.innerHTML = `<div class="empty">Ничего не найдено</div>`;
@@ -383,8 +376,9 @@
 
       wordList.innerHTML = filteredWords.map(word => {
         const active = selectedWord && selectedWord.georgian === word.georgian ? "active" : "";
+
         return `
-          <div class="word-item ${active}" data-georgian="${escapeHtml(word.georgian)}" title="${escapeHtml((word.georgian || "") + " - " + (word.russian || ""))}">
+          <div class="word-item ${active}" data-georgian="${escapeHtml(word.georgian)}">
             <div class="word-line">
               <span class="word-georgian-inline">${escapeHtml(word.georgian || "")}</span>
               <span class="word-separator">-</span>
@@ -398,9 +392,7 @@
         item.addEventListener("click", () => {
           const georgian = item.getAttribute("data-georgian");
           const word = allWords.find(w => w.georgian === georgian);
-          if (word) {
-            fillForm(word);
-          }
+          if (word) fillForm(word);
         });
       });
     }
@@ -428,151 +420,14 @@
           : [];
 
         renderList();
-      } catch (error) {
+      } catch {
         wordList.innerHTML = `<div class="empty">Не удалось загрузить список слов</div>`;
       }
     }
 
-    function showPreview() {
-      const rawUrl = normalizeGitHubImageUrl(imageUrlInput.value);
-
-      previewImage.style.display = "none";
-      previewMessage.textContent = "";
-      previewMessage.className = "message";
-
-      if (!rawUrl) {
-        previewMessage.textContent = "Сначала вставь ссылку на картинку.";
-        previewMessage.classList.add("error");
-        return;
-      }
-
-      previewImage.onload = () => {
-        previewMessage.textContent = "Картинка загружается правильно.";
-        previewMessage.className = "message success";
-        previewImage.style.display = "block";
-      };
-
-      previewImage.onerror = () => {
-        previewImage.style.display = "none";
-        previewMessage.textContent = "Не удалось загрузить картинку. Проверь ссылку.";
-        previewMessage.className = "message error";
-      };
-
-      previewImage.src = rawUrl;
-    }
-
-    function openAddIssue() {
-      const georgian = georgianInput.value.trim();
-      const russian = russianInput.value.trim();
-      const category = categoryInput.value.trim();
-      const imageUrl = normalizeGitHubImageUrl(imageUrlInput.value);
-
-      if (!georgian || !russian || !category || !imageUrl) {
-        alert("Заполни все поля.");
-        return;
-      }
-
-      const title = "[ADD_WORD]";
-      const body =
-`### Georgian Word
-
-${georgian}
-
-### Russian Translation
-
-${russian}
-
-### Category
-
-${category}
-
-### Image URL
-
-${imageUrl}`;
-
-      const issueUrl =
-        `https://github.com/${repoOwner}/${repoName}/issues/new?title=${encodeURIComponent(title)}&body=${encodeURIComponent(body)}`;
-
-      window.open(issueUrl, "_blank");
-    }
-
-    function openDeleteIssue() {
-      const georgian = georgianInput.value.trim();
-
-      if (!georgian) {
-        alert("Выбери слово или введи грузинское слово.");
-        return;
-      }
-
-      const confirmed = confirm(`Ты точно хочешь удалить слово "${georgian}"?`);
-
-      if (!confirmed) {
-        return;
-      }
-
-      const title = "[DELETE_WORD]";
-      const body =
-`### Georgian Word
-
-${georgian}`;
-
-      const issueUrl =
-        `https://github.com/${repoOwner}/${repoName}/issues/new?title=${encodeURIComponent(title)}&body=${encodeURIComponent(body)}`;
-
-      window.open(issueUrl, "_blank");
-    }
-
-    function openEditIssue() {
-      if (!selectedWord) {
-        openAddIssue();
-        return;
-      }
-
-      const oldGeorgian = selectedWord.georgian || "";
-      const newGeorgian = georgianInput.value.trim();
-      const russian = russianInput.value.trim();
-      const category = categoryInput.value.trim();
-      const imageUrl = normalizeGitHubImageUrl(imageUrlInput.value);
-
-      if (!oldGeorgian || !newGeorgian || !russian || !category || !imageUrl) {
-        alert("Заполни все поля.");
-        return;
-      }
-
-      const title = "[EDIT_WORD]";
-      const body =
-`### Old Georgian Word
-
-${oldGeorgian}
-
-### New Georgian Word
-
-${newGeorgian}
-
-### Russian Translation
-
-${russian}
-
-### Category
-
-${category}
-
-### Image URL
-
-${imageUrl}`;
-
-      const issueUrl =
-        `https://github.com/${repoOwner}/${repoName}/issues/new?title=${encodeURIComponent(title)}&body=${encodeURIComponent(body)}`;
-
-      window.open(issueUrl, "_blank");
-    }
-
     searchInput.addEventListener("input", renderList);
-    previewBtn.addEventListener("click", showPreview);
     newBtn.addEventListener("click", resetForm);
     refreshBtn.addEventListener("click", loadWords);
-    saveBtn.addEventListener("click", openEditIssue);
-    deleteBtn.addEventListener("click", openDeleteIssue);
 
     loadWords();
   </script>
