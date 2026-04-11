@@ -5,23 +5,137 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Georgian Words Admin</title>
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
+      margin: 0;
       font-family: Arial, sans-serif;
-      max-width: 800px;
-      margin: 40px auto;
+      background: #f4f5f7;
+      color: #222;
+    }
+
+    .page {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      width: 340px;
+      background: #ffffff;
+      border-right: 1px solid #ddd;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sidebar-header {
       padding: 20px;
-      background: #f5f5f5;
+      border-bottom: 1px solid #eee;
+    }
+
+    .sidebar-header h1 {
+      margin: 0 0 12px 0;
+      font-size: 22px;
+    }
+
+    .sidebar-header input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      font-size: 15px;
+    }
+
+    .word-list {
+      overflow-y: auto;
+      flex: 1;
+      padding: 8px;
+    }
+
+    .word-item {
+      background: #fff;
+      border: 1px solid #e6e6e6;
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 8px;
+      cursor: pointer;
+      transition: 0.15s ease;
+    }
+
+    .word-item:hover {
+      background: #f9fafb;
+      border-color: #cfcfcf;
+    }
+
+    .word-item.active {
+      border-color: #222;
+      background: #f0f3f8;
+    }
+
+    .word-georgian {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 6px;
+    }
+
+    .word-russian {
+      font-size: 14px;
+      color: #555;
+      margin-bottom: 4px;
+    }
+
+    .word-category {
+      font-size: 12px;
+      color: #777;
+    }
+
+    .content {
+      flex: 1;
+      padding: 30px;
     }
 
     .card {
+      max-width: 760px;
       background: white;
       padding: 24px;
-      border-radius: 16px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      border-radius: 18px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
     }
 
-    h1 {
+    .top-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+    .top-row button {
+      padding: 12px 16px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 15px;
+    }
+
+    .primary {
+      background: #222;
+      color: white;
+    }
+
+    .secondary {
+      background: #eceff3;
+      color: #222;
+    }
+
+    .danger {
+      background: #b3261e;
+      color: white;
+    }
+
+    h2 {
       margin-top: 0;
+      margin-bottom: 16px;
     }
 
     label {
@@ -31,174 +145,303 @@
       font-weight: bold;
     }
 
-    input, select, button {
+    input, select {
       width: 100%;
       padding: 12px;
-      font-size: 16px;
-      border-radius: 10px;
       border: 1px solid #ccc;
-      box-sizing: border-box;
-    }
-
-    button {
-      margin-top: 20px;
-      background: #222;
-      color: white;
-      border: none;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background: #444;
-    }
-
-    .note {
-      margin-top: 20px;
-      padding: 12px;
-      background: #eef3ff;
       border-radius: 10px;
-      font-size: 14px;
+      font-size: 15px;
     }
 
-    .preview {
-      margin-top: 16px;
-      text-align: center;
+    .preview-block {
+      margin-top: 20px;
+      padding: 16px;
+      background: #fafafa;
+      border: 1px solid #eee;
+      border-radius: 14px;
     }
 
-    .preview img {
-      max-width: 220px;
-      max-height: 220px;
+    .preview-block img {
+      display: none;
+      max-width: 240px;
+      max-height: 240px;
+      margin-top: 12px;
       border-radius: 12px;
       border: 1px solid #ddd;
-      display: none;
-      margin-top: 10px;
     }
 
-    .error {
-      color: #b00020;
-      font-size: 14px;
+    .message {
       margin-top: 10px;
+      font-size: 14px;
     }
 
     .success {
       color: #146c2e;
+    }
+
+    .error {
+      color: #b00020;
+    }
+
+    .hint {
+      margin-top: 18px;
+      padding: 14px;
+      border-radius: 12px;
+      background: #eef3ff;
       font-size: 14px;
-      margin-top: 10px;
+      line-height: 1.5;
+    }
+
+    .empty {
+      color: #777;
+      padding: 16px;
+    }
+
+    @media (max-width: 900px) {
+      .page {
+        flex-direction: column;
+      }
+
+      .sidebar {
+        width: 100%;
+        max-height: 40vh;
+      }
+
+      .content {
+        padding: 16px;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="card">
-    <h1>Georgian Words Admin</h1>
-    <p>Добавление нового слова через GitHub Issue.</p>
+  <div class="page">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <h1>Words Admin</h1>
+        <input id="searchInput" type="text" placeholder="Поиск слова..." />
+      </div>
+      <div id="wordList" class="word-list">
+        <div class="empty">Загрузка списка...</div>
+      </div>
+    </aside>
 
-    <label for="georgian">Грузинское слово</label>
-    <input id="georgian" type="text" placeholder="Например: წყალი" />
+    <main class="content">
+      <div class="card">
+        <div class="top-row">
+          <button class="secondary" id="newBtn" type="button">Создать новое</button>
+          <button class="primary" id="saveBtn" type="button">Сохранить изменения</button>
+          <button class="danger" id="deleteBtn" type="button">Удалить выбранное</button>
+        </div>
 
-    <label for="russian">Русский перевод</label>
-    <input id="russian" type="text" placeholder="Например: вода" />
+        <h2 id="formTitle">Новое слово</h2>
 
-    <label for="category">Категория</label>
-    <select id="category">
-      <option value="basic">basic</option>
-      <option value="body">body</option>
-      <option value="food">food</option>
-    </select>
+        <label for="georgian">Грузинское слово</label>
+        <input id="georgian" type="text" placeholder="Например: წყალი" />
 
-    <label for="imageUrl">Ссылка на картинку</label>
-    <input id="imageUrl" type="text" placeholder="Вставь обычную ссылку GitHub или raw URL" />
+        <label for="russian">Русский перевод</label>
+        <input id="russian" type="text" placeholder="Например: вода" />
 
-    <div class="preview">
-      <button type="button" id="previewBtn">Показать превью</button>
-      <img id="previewImage" alt="Preview" />
-      <div id="previewMessage"></div>
-    </div>
+        <label for="category">Категория</label>
+        <select id="category">
+          <option value="basic">basic</option>
+          <option value="body">body</option>
+          <option value="food">food</option>
+        </select>
 
-    <button type="button" id="saveBtn">Сохранить</button>
-    <button type="button" id="deleteBtn">Удалить слово</button>
-    
-    <div class="note">
-      Можно вставлять обычную GitHub ссылку вида
-      <br><br>
-      https://github.com/.../blob/main/images/file.jpg
-      <br><br>
-      Страница сама преобразует её в raw-ссылку.
-    </div>
+        <label for="imageUrl">Ссылка на картинку</label>
+        <input id="imageUrl" type="text" placeholder="Вставь GitHub ссылку или raw URL" />
+
+        <div class="preview-block">
+          <button class="secondary" id="previewBtn" type="button">Показать превью</button>
+          <div id="previewMessage" class="message"></div>
+          <img id="previewImage" alt="Preview" />
+        </div>
+
+        <div class="hint">
+          Сейчас:
+          <br><br>
+          <b>Сохранить изменения</b> открывает issue на редактирование
+          <br>
+          <b>Удалить выбранное</b> открывает issue на удаление
+          <br><br>
+          На следующем шаге подключим workflow для редактирования выбранного слова.
+        </div>
+      </div>
+    </main>
   </div>
 
   <script>
-  const repoOwner = "Irinakucherenko";
-  const repoName = "georgian-words";
+    const repoOwner = "Irinakucherenko";
+    const repoName = "georgian-words";
+    const wordsJsonUrl = `https://raw.githubusercontent.com/${repoOwner}/${repoName}/main/words.json?t=${Date.now()}`;
 
-  const georgianInput = document.getElementById("georgian");
-  const russianInput = document.getElementById("russian");
-  const categoryInput = document.getElementById("category");
-  const imageUrlInput = document.getElementById("imageUrl");
-  const previewBtn = document.getElementById("previewBtn");
-  const previewImage = document.getElementById("previewImage");
-  const previewMessage = document.getElementById("previewMessage");
-  const saveBtn = document.getElementById("saveBtn");
-  const deleteBtn = document.getElementById("deleteBtn");
+    const wordList = document.getElementById("wordList");
+    const searchInput = document.getElementById("searchInput");
 
-  function normalizeGitHubImageUrl(url) {
-    if (!url) return "";
+    const formTitle = document.getElementById("formTitle");
+    const georgianInput = document.getElementById("georgian");
+    const russianInput = document.getElementById("russian");
+    const categoryInput = document.getElementById("category");
+    const imageUrlInput = document.getElementById("imageUrl");
 
-    let result = url.trim();
+    const previewBtn = document.getElementById("previewBtn");
+    const previewImage = document.getElementById("previewImage");
+    const previewMessage = document.getElementById("previewMessage");
 
-    if (result.includes("github.com") && result.includes("/blob/")) {
-      result = result
-        .replace("https://github.com/", "https://raw.githubusercontent.com/")
-        .replace("/blob/", "/");
+    const newBtn = document.getElementById("newBtn");
+    const saveBtn = document.getElementById("saveBtn");
+    const deleteBtn = document.getElementById("deleteBtn");
+
+    let allWords = [];
+    let filteredWords = [];
+    let selectedWord = null;
+
+    function normalizeGitHubImageUrl(url) {
+      if (!url) return "";
+
+      let result = url.trim();
+
+      if (result.includes("github.com") && result.includes("/blob/")) {
+        result = result
+          .replace("https://github.com/", "https://raw.githubusercontent.com/")
+          .replace("/blob/", "/");
+      }
+
+      if (result.endsWith("?raw=true")) {
+        result = result.replace("?raw=true", "");
+      }
+
+      return result;
     }
 
-    if (result.endsWith("?raw=true")) {
-      result = result.replace("?raw=true", "");
-    }
-
-    return result;
-  }
-
-  function showPreview() {
-    const rawUrl = normalizeGitHubImageUrl(imageUrlInput.value);
-
-    previewImage.style.display = "none";
-    previewMessage.className = "";
-    previewMessage.textContent = "";
-
-    if (!rawUrl) {
-      previewMessage.className = "error";
-      previewMessage.textContent = "Сначала вставь ссылку на картинку.";
-      return;
-    }
-
-    previewImage.onload = () => {
-      previewMessage.className = "success";
-      previewMessage.textContent = "Картинка загружается правильно.";
-      previewImage.style.display = "inline-block";
-    };
-
-    previewImage.onerror = () => {
+    function resetForm() {
+      selectedWord = null;
+      formTitle.textContent = "Новое слово";
+      georgianInput.value = "";
+      russianInput.value = "";
+      categoryInput.value = "basic";
+      imageUrlInput.value = "";
       previewImage.style.display = "none";
-      previewMessage.className = "error";
-      previewMessage.textContent = "Не удалось загрузить картинку. Проверь ссылку.";
-    };
-
-    previewImage.src = rawUrl;
-  }
-
-  function createIssue() {
-    const georgian = georgianInput.value.trim();
-    const russian = russianInput.value.trim();
-    const category = categoryInput.value.trim();
-    const imageUrl = normalizeGitHubImageUrl(imageUrlInput.value);
-
-    if (!georgian || !russian || !category || !imageUrl) {
-      alert("Заполни все поля.");
-      return;
+      previewImage.src = "";
+      previewMessage.textContent = "";
+      previewMessage.className = "message";
+      renderList();
     }
 
-    const title = "[ADD_WORD]";
-    const body =
+    function fillForm(word) {
+      selectedWord = word;
+      formTitle.textContent = `Редактирование: ${word.georgian}`;
+      georgianInput.value = word.georgian || "";
+      russianInput.value = word.russian || "";
+      categoryInput.value = word.category || "basic";
+      imageUrlInput.value = word.imageUrl || "";
+      previewImage.style.display = "none";
+      previewImage.src = "";
+      previewMessage.textContent = "";
+      previewMessage.className = "message";
+      renderList();
+    }
+
+    function renderList() {
+      const query = searchInput.value.trim().toLowerCase();
+
+      filteredWords = allWords.filter(word => {
+        const ge = (word.georgian || "").toLowerCase();
+        const ru = (word.russian || "").toLowerCase();
+        return ge.includes(query) || ru.includes(query);
+      });
+
+      if (filteredWords.length === 0) {
+        wordList.innerHTML = `<div class="empty">Ничего не найдено</div>`;
+        return;
+      }
+
+      wordList.innerHTML = filteredWords.map(word => {
+        const active = selectedWord && selectedWord.georgian === word.georgian ? "active" : "";
+        return `
+          <div class="word-item ${active}" data-georgian="${escapeHtml(word.georgian)}">
+            <div class="word-georgian">${escapeHtml(word.georgian || "")}</div>
+            <div class="word-russian">${escapeHtml(word.russian || "")}</div>
+            <div class="word-category">${escapeHtml(word.category || "")}</div>
+          </div>
+        `;
+      }).join("");
+
+      document.querySelectorAll(".word-item").forEach(item => {
+        item.addEventListener("click", () => {
+          const georgian = item.getAttribute("data-georgian");
+          const word = allWords.find(w => w.georgian === georgian);
+          if (word) {
+            fillForm(word);
+          }
+        });
+      });
+    }
+
+    function escapeHtml(text) {
+      return String(text)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;");
+    }
+
+    async function loadWords() {
+      try {
+        const response = await fetch(wordsJsonUrl);
+        const data = await response.json();
+
+        allWords = Array.isArray(data.words)
+          ? data.words.filter(Boolean)
+          : [];
+
+        renderList();
+      } catch (error) {
+        wordList.innerHTML = `<div class="empty">Не удалось загрузить список слов</div>`;
+      }
+    }
+
+    function showPreview() {
+      const rawUrl = normalizeGitHubImageUrl(imageUrlInput.value);
+
+      previewImage.style.display = "none";
+      previewMessage.textContent = "";
+      previewMessage.className = "message";
+
+      if (!rawUrl) {
+        previewMessage.textContent = "Сначала вставь ссылку на картинку.";
+        previewMessage.classList.add("error");
+        return;
+      }
+
+      previewImage.onload = () => {
+        previewMessage.textContent = "Картинка загружается правильно.";
+        previewMessage.className = "message success";
+        previewImage.style.display = "block";
+      };
+
+      previewImage.onerror = () => {
+        previewImage.style.display = "none";
+        previewMessage.textContent = "Не удалось загрузить картинку. Проверь ссылку.";
+        previewMessage.className = "message error";
+      };
+
+      previewImage.src = rawUrl;
+    }
+
+    function openAddIssue() {
+      const georgian = georgianInput.value.trim();
+      const russian = russianInput.value.trim();
+      const category = categoryInput.value.trim();
+      const imageUrl = normalizeGitHubImageUrl(imageUrlInput.value);
+
+      if (!georgian || !russian || !category || !imageUrl) {
+        alert("Заполни все поля.");
+        return;
+      }
+
+      const title = "[ADD_WORD]";
+      const body =
 `### Georgian Word
 
 ${georgian}
@@ -215,35 +458,84 @@ ${category}
 
 ${imageUrl}`;
 
-    const issueUrl =
-      `https://github.com/${repoOwner}/${repoName}/issues/new?title=${encodeURIComponent(title)}&body=${encodeURIComponent(body)}`;
+      const issueUrl =
+        `https://github.com/${repoOwner}/${repoName}/issues/new?title=${encodeURIComponent(title)}&body=${encodeURIComponent(body)}`;
 
-    window.open(issueUrl, "_blank");
-  }
-
-  function createDeleteIssue() {
-    const georgian = georgianInput.value.trim();
-
-    if (!georgian) {
-      alert("Введи грузинское слово для удаления.");
-      return;
+      window.open(issueUrl, "_blank");
     }
 
-    const title = "[DELETE_WORD]";
-    const body =
+    function openDeleteIssue() {
+      const georgian = georgianInput.value.trim();
+
+      if (!georgian) {
+        alert("Выбери слово или введи грузинское слово.");
+        return;
+      }
+
+      const title = "[DELETE_WORD]";
+      const body =
 `### Georgian Word
 
 ${georgian}`;
 
-    const issueUrl =
-      `https://github.com/${repoOwner}/${repoName}/issues/new?title=${encodeURIComponent(title)}&body=${encodeURIComponent(body)}`;
+      const issueUrl =
+        `https://github.com/${repoOwner}/${repoName}/issues/new?title=${encodeURIComponent(title)}&body=${encodeURIComponent(body)}`;
 
-    window.open(issueUrl, "_blank");
-  }
+      window.open(issueUrl, "_blank");
+    }
 
-  previewBtn.addEventListener("click", showPreview);
-  saveBtn.addEventListener("click", createIssue);
-  deleteBtn.addEventListener("click", createDeleteIssue);
-</script>
+    function openEditIssue() {
+      if (!selectedWord) {
+        openAddIssue();
+        return;
+      }
+
+      const oldGeorgian = selectedWord.georgian || "";
+      const newGeorgian = georgianInput.value.trim();
+      const russian = russianInput.value.trim();
+      const category = categoryInput.value.trim();
+      const imageUrl = normalizeGitHubImageUrl(imageUrlInput.value);
+
+      if (!oldGeorgian || !newGeorgian || !russian || !category || !imageUrl) {
+        alert("Заполни все поля.");
+        return;
+      }
+
+      const title = "[EDIT_WORD]";
+      const body =
+`### Old Georgian Word
+
+${oldGeorgian}
+
+### New Georgian Word
+
+${newGeorgian}
+
+### Russian Translation
+
+${russian}
+
+### Category
+
+${category}
+
+### Image URL
+
+${imageUrl}`;
+
+      const issueUrl =
+        `https://github.com/${repoOwner}/${repoName}/issues/new?title=${encodeURIComponent(title)}&body=${encodeURIComponent(body)}`;
+
+      window.open(issueUrl, "_blank");
+    }
+
+    searchInput.addEventListener("input", renderList);
+    previewBtn.addEventListener("click", showPreview);
+    newBtn.addEventListener("click", resetForm);
+    saveBtn.addEventListener("click", openEditIssue);
+    deleteBtn.addEventListener("click", openDeleteIssue);
+
+    loadWords();
+  </script>
 </body>
 </html>
