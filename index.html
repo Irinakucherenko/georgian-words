@@ -471,25 +471,31 @@ ${imageUrl}`;
       window.open(issueUrl, "_blank");
     }
 
-    function openDeleteIssue() {
-      const georgian = georgianInput.value.trim();
+function openDeleteIssue() {
+  const georgian = georgianInput.value.trim();
 
-      if (!georgian) {
-        alert("Выбери слово или введи грузинское слово.");
-        return;
-      }
+  if (!georgian) {
+    alert("Выбери слово или введи грузинское слово.");
+    return;
+  }
 
-      const title = "[DELETE_WORD]";
-      const body =
+  const confirmed = confirm(`Ты точно хочешь удалить слово "${georgian}"?`);
+
+  if (!confirmed) {
+    return;
+  }
+
+  const title = "[DELETE_WORD]";
+  const body =
 `### Georgian Word
 
 ${georgian}`;
 
-      const issueUrl =
-        `https://github.com/${repoOwner}/${repoName}/issues/new?title=${encodeURIComponent(title)}&body=${encodeURIComponent(body)}`;
+  const issueUrl =
+    `https://github.com/${repoOwner}/${repoName}/issues/new?title=${encodeURIComponent(title)}&body=${encodeURIComponent(body)}`;
 
-      window.open(issueUrl, "_blank");
-    }
+  window.open(issueUrl, "_blank");
+}
 
     function openEditIssue() {
       if (!selectedWord) {
