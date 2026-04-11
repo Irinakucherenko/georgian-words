@@ -1,0 +1,33 @@
+name: Add Word
+description: Add new Georgian word
+title: "[ADD_WORD]"
+labels: ["add-word"]
+
+body:
+  - type: input
+    id: georgian
+    attributes:
+      label: Georgian Word
+    validations:
+      required: true
+
+  - type: input
+    id: russian
+    attributes:
+      label: Russian Translation
+    validations:
+      required: true
+
+  - type: input
+    id: category
+    attributes:
+      label: Category
+    validations:
+      required: true
+
+  - type: input
+    id: imageurl
+    attributes:
+      label: Image URL
+    validations:
+      required: true
