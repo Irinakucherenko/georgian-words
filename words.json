@@ -1,5 +1,5 @@
 {
-  "version": 9,
+  "version": 10,
   "words": [
     {
       "id": 1,
@@ -34,6 +34,13 @@
       "georgian": "წიგნი",
       "russian": "книга",
       "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/book.jpg",
+      "category": "basic"
+    },
+    {
+      "id": 6,
+      "georgian": "სკამი",
+      "russian": "стул",
+      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/chair.jpg",
       "category": "basic"
     }
   ]
