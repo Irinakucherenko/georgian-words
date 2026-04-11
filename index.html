@@ -290,6 +290,7 @@
     const previewMessage = document.getElementById("previewMessage");
 
     const newBtn = document.getElementById("newBtn");
+    const refreshBtn = document.getElementById("refreshBtn");
     const saveBtn = document.getElementById("saveBtn");
     const deleteBtn = document.getElementById("deleteBtn");
 
@@ -387,20 +388,25 @@
         .replaceAll('"', "&quot;");
     }
 
-    async function loadWords() {
-      try {
-        const response = await fetch(wordsJsonUrl);
-        const data = await response.json();
+async function loadWords() {
+  try {
+    wordList.innerHTML = `<div class="empty">Загрузка...</div>`;
 
-        allWords = Array.isArray(data.words)
-          ? data.words.filter(Boolean)
-          : [];
+    const response = await fetch(
+      `https://raw.githubusercontent.com/${repoOwner}/${repoName}/main/words.json?t=${Date.now()}`
+    );
 
-        renderList();
-      } catch (error) {
-        wordList.innerHTML = `<div class="empty">Не удалось загрузить список слов</div>`;
-      }
-    }
+    const data = await response.json();
+
+    allWords = Array.isArray(data.words)
+      ? data.words.filter(Boolean)
+      : [];
+
+    renderList();
+  } catch (error) {
+    wordList.innerHTML = `<div class="empty">Не удалось загрузить список слов</div>`;
+  }
+}
 
     function showPreview() {
       const rawUrl = normalizeGitHubImageUrl(imageUrlInput.value);
@@ -533,6 +539,7 @@ ${imageUrl}`;
     searchInput.addEventListener("input", renderList);
     previewBtn.addEventListener("click", showPreview);
     newBtn.addEventListener("click", resetForm);
+    refreshBtn.addEventListener("click", loadWords);
     saveBtn.addEventListener("click", openEditIssue);
     deleteBtn.addEventListener("click", openDeleteIssue);
 
