@@ -6,42 +6,48 @@
       "georgian": "ხელი",
       "russian": "рука",
       "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/Hand.jpg",
-      "category": "body"
+      "category": "body",
+      "createdAt": "2026-04-11T12:01:00.000Z"
     },
     {
       "id": 2,
       "georgian": "წყალი",
       "russian": "вода",
       "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/water.jpg",
-      "category": "basic"
+      "category": "basic",
+      "createdAt": "2026-04-11T12:02:00.000Z"
     },
     {
       "id": 3,
       "georgian": "პური",
       "russian": "хлеб",
       "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/bread.jpg",
-      "category": "food"
+      "category": "food",
+      "createdAt": "2026-04-11T12:03:00.000Z"
     },
     {
       "id": 4,
       "georgian": "ხე",
       "russian": "дерево",
       "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/tree.jpg",
-      "category": "basic"
+      "category": "basic",
+      "createdAt": "2026-04-11T12:04:00.000Z"
     },
     {
       "id": 5,
       "georgian": "წიგნი",
       "russian": "книга",
       "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/book.jpg",
-      "category": "basic"
+      "category": "basic",
+      "createdAt": "2026-04-11T12:05:00.000Z"
     },
     {
       "id": 6,
       "georgian": "სკამი",
       "russian": "стул",
       "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/chair.jpg",
-      "category": "basic"
+      "category": "basic",
+      "createdAt": "2026-04-11T12:06:00.000Z"
     }
   ]
 }
