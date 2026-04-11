@@ -1,5 +1,5 @@
 {
-  "version": 8,
+  "version": 9,
   "words": [
     {
       "id": 1,
@@ -27,6 +27,13 @@
       "georgian": "ხე",
       "russian": "дерево",
       "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/tree.jpg",
+      "category": "basic"
+    },
+    {
+      "id": 5,
+      "georgian": "წიგნი",
+      "russian": "книга",
+      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/book.jpg",
       "category": "basic"
     }
   ]
