@@ -22,9 +22,9 @@
     }
 
     .sidebar {
-      width: 300px;
-      min-width: 300px;
-      max-width: 300px;
+      width: 320px;
+      min-width: 320px;
+      max-width: 320px;
       background: #ffffff;
       border-right: 1px solid #ddd;
       display: flex;
@@ -42,13 +42,19 @@
       line-height: 1.2;
     }
 
-    .sidebar-header input {
+    .sidebar-header input,
+    .sidebar-header select {
       width: 100%;
       padding: 9px 12px;
       border: 1px solid #ccc;
       border-radius: 10px;
       font-size: 14px;
-      height: 40px;
+      min-height: 40px;
+      background: #fff;
+    }
+
+    .sort-wrap {
+      margin-top: 8px;
     }
 
     .word-list {
@@ -157,7 +163,8 @@
       font-weight: bold;
     }
 
-    input, select {
+    input,
+    select {
       width: 100%;
       padding: 12px;
       border: 1px solid #ccc;
@@ -226,10 +233,7 @@
         padding: 16px;
       }
 
-      .word-item {
-        white-space: normal;
-      }
-
+      .word-item,
       .word-line {
         white-space: normal;
       }
@@ -242,7 +246,16 @@
       <div class="sidebar-header">
         <h1>Words Admin</h1>
         <input id="searchInput" type="text" placeholder="Поиск слова..." />
+
+        <div class="sort-wrap">
+          <select id="sortSelect">
+            <option value="alphabet">Сортировка: грузинский алфавит</option>
+            <option value="newest">Сортировка: сначала новые</option>
+            <option value="oldest">Сортировка: сначала старые</option>
+          </select>
+        </div>
       </div>
+
       <div id="wordList" class="word-list">
         <div class="empty">Загрузка списка...</div>
       </div>
@@ -298,6 +311,7 @@
 
     const wordList = document.getElementById("wordList");
     const searchInput = document.getElementById("searchInput");
+    const sortSelect = document.getElementById("sortSelect");
 
     const formTitle = document.getElementById("formTitle");
     const georgianInput = document.getElementById("georgian");
@@ -317,6 +331,11 @@
     let allWords = [];
     let filteredWords = [];
     let selectedWord = null;
+
+    const georgianCollator = new Intl.Collator("ka", {
+      sensitivity: "base",
+      numeric: false
+    });
 
     function normalizeGitHubImageUrl(url) {
       if (!url) return "";
@@ -340,7 +359,9 @@
       categoryInput.value = "basic";
       imageUrlInput.value = "";
       previewImage.style.display = "none";
+      previewImage.src = "";
       previewMessage.textContent = "";
+      previewMessage.className = "message";
       renderList();
     }
 
@@ -352,22 +373,43 @@
       categoryInput.value = word.category || "basic";
       imageUrlInput.value = word.imageUrl || "";
       previewImage.style.display = "none";
+      previewImage.src = "";
       previewMessage.textContent = "";
+      previewMessage.className = "message";
       renderList();
+    }
+
+    function getTimeValue(word) {
+      const value = Date.parse(word?.createdAt || "");
+      return Number.isNaN(value) ? 0 : value;
+    }
+
+    function sortWords(words) {
+      const mode = sortSelect.value;
+
+      if (mode === "newest") {
+        return [...words].sort((a, b) => getTimeValue(b) - getTimeValue(a));
+      }
+
+      if (mode === "oldest") {
+        return [...words].sort((a, b) => getTimeValue(a) - getTimeValue(b));
+      }
+
+      return [...words].sort((a, b) =>
+        georgianCollator.compare(a.georgian || "", b.georgian || "")
+      );
     }
 
     function renderList() {
       const query = searchInput.value.trim().toLowerCase();
 
-      filteredWords = allWords
-        .filter(word => {
-          const ge = (word.georgian || "").toLowerCase();
-          const ru = (word.russian || "").toLowerCase();
-          return ge.includes(query) || ru.includes(query);
-        })
-        .sort((a, b) =>
-          (a.georgian || "").localeCompare((b.georgian || ""), "ka")
-        );
+      filteredWords = allWords.filter(word => {
+        const ge = String(word.georgian || "").toLowerCase();
+        const ru = String(word.russian || "").toLowerCase();
+        return ge.includes(query) || ru.includes(query);
+      });
+
+      filteredWords = sortWords(filteredWords);
 
       if (filteredWords.length === 0) {
         wordList.innerHTML = `<div class="empty">Ничего не найдено</div>`;
@@ -375,10 +417,11 @@
       }
 
       wordList.innerHTML = filteredWords.map(word => {
-        const active = selectedWord && selectedWord.georgian === word.georgian ? "active" : "";
+        const active = selectedWord && selectedWord.id === word.id ? "active" : "";
+        const title = `${word.georgian || ""} - ${word.russian || ""}`;
 
         return `
-          <div class="word-item ${active}" data-georgian="${escapeHtml(word.georgian)}">
+          <div class="word-item ${active}" data-id="${escapeHtml(String(word.id ?? ""))}" title="${escapeHtml(title)}">
             <div class="word-line">
               <span class="word-georgian-inline">${escapeHtml(word.georgian || "")}</span>
               <span class="word-separator">-</span>
@@ -390,9 +433,11 @@
 
       document.querySelectorAll(".word-item").forEach(item => {
         item.addEventListener("click", () => {
-          const georgian = item.getAttribute("data-georgian");
-          const word = allWords.find(w => w.georgian === georgian);
-          if (word) fillForm(word);
+          const id = Number(item.getAttribute("data-id"));
+          const word = allWords.find(w => Number(w.id) === id);
+          if (word) {
+            fillForm(word);
+          }
         });
       });
     }
@@ -420,14 +465,152 @@
           : [];
 
         renderList();
-      } catch {
+      } catch (error) {
         wordList.innerHTML = `<div class="empty">Не удалось загрузить список слов</div>`;
       }
     }
 
+    function showPreview() {
+      const rawUrl = normalizeGitHubImageUrl(imageUrlInput.value);
+
+      previewImage.style.display = "none";
+      previewMessage.textContent = "";
+      previewMessage.className = "message";
+
+      if (!rawUrl) {
+        previewMessage.textContent = "Сначала вставь ссылку на картинку.";
+        previewMessage.className = "message error";
+        return;
+      }
+
+      previewImage.onload = () => {
+        previewMessage.textContent = "Картинка загружается правильно.";
+        previewMessage.className = "message success";
+        previewImage.style.display = "block";
+      };
+
+      previewImage.onerror = () => {
+        previewImage.style.display = "none";
+        previewMessage.textContent = "Не удалось загрузить картинку. Проверь ссылку.";
+        previewMessage.className = "message error";
+      };
+
+      previewImage.src = rawUrl;
+    }
+
+    function openAddIssue() {
+      const georgian = georgianInput.value.trim();
+      const russian = russianInput.value.trim();
+      const category = categoryInput.value.trim();
+      const imageUrl = normalizeGitHubImageUrl(imageUrlInput.value);
+
+      if (!georgian || !russian || !category || !imageUrl) {
+        alert("Заполни все поля.");
+        return;
+      }
+
+      const title = "[ADD_WORD]";
+      const body =
+`### Georgian Word
+
+${georgian}
+
+### Russian Translation
+
+${russian}
+
+### Category
+
+${category}
+
+### Image URL
+
+${imageUrl}`;
+
+      const issueUrl =
+        `https://github.com/${repoOwner}/${repoName}/issues/new?title=${encodeURIComponent(title)}&body=${encodeURIComponent(body)}`;
+
+      window.open(issueUrl, "_blank");
+    }
+
+    function openDeleteIssue() {
+      const georgian = georgianInput.value.trim();
+
+      if (!georgian) {
+        alert("Выбери слово или введи грузинское слово.");
+        return;
+      }
+
+      const confirmed = confirm(`Ты точно хочешь удалить слово "${georgian}"?`);
+
+      if (!confirmed) {
+        return;
+      }
+
+      const title = "[DELETE_WORD]";
+      const body =
+`### Georgian Word
+
+${georgian}`;
+
+      const issueUrl =
+        `https://github.com/${repoOwner}/${repoName}/issues/new?title=${encodeURIComponent(title)}&body=${encodeURIComponent(body)}`;
+
+      window.open(issueUrl, "_blank");
+    }
+
+    function openEditIssue() {
+      if (!selectedWord) {
+        openAddIssue();
+        return;
+      }
+
+      const oldGeorgian = selectedWord.georgian || "";
+      const newGeorgian = georgianInput.value.trim();
+      const russian = russianInput.value.trim();
+      const category = categoryInput.value.trim();
+      const imageUrl = normalizeGitHubImageUrl(imageUrlInput.value);
+
+      if (!oldGeorgian || !newGeorgian || !russian || !category || !imageUrl) {
+        alert("Заполни все поля.");
+        return;
+      }
+
+      const title = "[EDIT_WORD]";
+      const body =
+`### Old Georgian Word
+
+${oldGeorgian}
+
+### New Georgian Word
+
+${newGeorgian}
+
+### Russian Translation
+
+${russian}
+
+### Category
+
+${category}
+
+### Image URL
+
+${imageUrl}`;
+
+      const issueUrl =
+        `https://github.com/${repoOwner}/${repoName}/issues/new?title=${encodeURIComponent(title)}&body=${encodeURIComponent(body)}`;
+
+      window.open(issueUrl, "_blank");
+    }
+
     searchInput.addEventListener("input", renderList);
+    sortSelect.addEventListener("change", renderList);
+    previewBtn.addEventListener("click", showPreview);
     newBtn.addEventListener("click", resetForm);
     refreshBtn.addEventListener("click", loadWords);
+    saveBtn.addEventListener("click", openEditIssue);
+    deleteBtn.addEventListener("click", openDeleteIssue);
 
     loadWords();
   </script>
