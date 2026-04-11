@@ -127,98 +127,78 @@
   </div>
 
   <script>
-    const repoOwner = "Irinakucherenko";
-    const repoName = "georgian-words";
+  const repoOwner = "Irinakucherenko";
+  const repoName = "georgian-words";
 
-    const georgianInput = document.getElementById("georgian");
-    const russianInput = document.getElementById("russian");
-    const categoryInput = document.getElementById("category");
-    const imageUrlInput = document.getElementById("imageUrl");
-    const previewBtn = document.getElementById("previewBtn");
-    const previewImage = document.getElementById("previewImage");
-    const previewMessage = document.getElementById("previewMessage");
-    const saveBtn = document.getElementById("saveBtn");
-    const deleteBtn = document.getElementById("deleteBtn");
-    
-    function normalizeGitHubImageUrl(url) {
-      if (!url) return "";
+  const georgianInput = document.getElementById("georgian");
+  const russianInput = document.getElementById("russian");
+  const categoryInput = document.getElementById("category");
+  const imageUrlInput = document.getElementById("imageUrl");
+  const previewBtn = document.getElementById("previewBtn");
+  const previewImage = document.getElementById("previewImage");
+  const previewMessage = document.getElementById("previewMessage");
+  const saveBtn = document.getElementById("saveBtn");
+  const deleteBtn = document.getElementById("deleteBtn");
 
-      let result = url.trim();
+  function normalizeGitHubImageUrl(url) {
+    if (!url) return "";
 
-      if (result.includes("github.com") && result.includes("/blob/")) {
-        result = result
-          .replace("https://github.com/", "https://raw.githubusercontent.com/")
-          .replace("/blob/", "/");
-      }
+    let result = url.trim();
 
-      if (result.endsWith("?raw=true")) {
-        result = result.replace("?raw=true", "");
-      }
-
-      return result;
+    if (result.includes("github.com") && result.includes("/blob/")) {
+      result = result
+        .replace("https://github.com/", "https://raw.githubusercontent.com/")
+        .replace("/blob/", "/");
     }
 
-    function showPreview() {
-      const rawUrl = normalizeGitHubImageUrl(imageUrlInput.value);
-
-      previewImage.style.display = "none";
-      previewMessage.className = "";
-      previewMessage.textContent = "";
-
-      if (!rawUrl) {
-        previewMessage.className = "error";
-        previewMessage.textContent = "Сначала вставь ссылку на картинку.";
-        return;
-      }
-
-      previewImage.onload = () => {
-        previewMessage.className = "success";
-        previewMessage.textContent = "Картинка загружается правильно.";
-        previewImage.style.display = "inline-block";
-      };
-
-      previewImage.onerror = () => {
-        previewImage.style.display = "none";
-        previewMessage.className = "error";
-        previewMessage.textContent = "Не удалось загрузить картинку. Проверь ссылку.";
-      };
-
-      previewImage.src = rawUrl;
+    if (result.endsWith("?raw=true")) {
+      result = result.replace("?raw=true", "");
     }
 
-    function createIssue() {
-      const georgian = georgianInput.value.trim();
-      const russian = russianInput.value.trim();
-      const category = categoryInput.value.trim();
-      const imageUrl = normalizeGitHubImageUrl(imageUrlInput.value);
-
-      if (!georgian || !russian || !category || !imageUrl) {
-        alert("Заполни все поля.");
-        return;
-      }
-
-      function createDeleteIssue() {
-  const georgian = georgianInput.value.trim();
-
-  if (!georgian) {
-    alert("Введи грузинское слово для удаления.");
-    return;
+    return result;
   }
 
-  const title = "[DELETE_WORD]";
-  const body =
-`### Georgian Word
+  function showPreview() {
+    const rawUrl = normalizeGitHubImageUrl(imageUrlInput.value);
 
-${georgian}`;
+    previewImage.style.display = "none";
+    previewMessage.className = "";
+    previewMessage.textContent = "";
 
-  const issueUrl =
-    `https://github.com/${repoOwner}/${repoName}/issues/new?title=${encodeURIComponent(title)}&body=${encodeURIComponent(body)}`;
+    if (!rawUrl) {
+      previewMessage.className = "error";
+      previewMessage.textContent = "Сначала вставь ссылку на картинку.";
+      return;
+    }
 
-  window.open(issueUrl, "_blank");
-}
-      
-      const title = "[ADD_WORD]";
-      const body =
+    previewImage.onload = () => {
+      previewMessage.className = "success";
+      previewMessage.textContent = "Картинка загружается правильно.";
+      previewImage.style.display = "inline-block";
+    };
+
+    previewImage.onerror = () => {
+      previewImage.style.display = "none";
+      previewMessage.className = "error";
+      previewMessage.textContent = "Не удалось загрузить картинку. Проверь ссылку.";
+    };
+
+    previewImage.src = rawUrl;
+  }
+
+  function createIssue() {
+    const georgian = georgianInput.value.trim();
+    const russian = russianInput.value.trim();
+    const category = categoryInput.value.trim();
+    const imageUrl = normalizeGitHubImageUrl(imageUrlInput.value);
+
+    if (!georgian || !russian || !category || !imageUrl) {
+      alert("Заполни все поля.");
+      return;
+    }
+
+    const title = "[ADD_WORD]";
+    const body =
 `### Georgian Word
 
 ${georgian}
@@ -235,15 +215,35 @@ ${category}
 
 ${imageUrl}`;
 
-      const issueUrl =
-        `https://github.com/${repoOwner}/${repoName}/issues/new?title=${encodeURIComponent(title)}&body=${encodeURIComponent(body)}`;
+    const issueUrl =
+      `https://github.com/${repoOwner}/${repoName}/issues/new?title=${encodeURIComponent(title)}&body=${encodeURIComponent(body)}`;
 
-      window.open(issueUrl, "_blank");
+    window.open(issueUrl, "_blank");
+  }
+
+  function createDeleteIssue() {
+    const georgian = georgianInput.value.trim();
+
+    if (!georgian) {
+      alert("Введи грузинское слово для удаления.");
+      return;
     }
 
-    previewBtn.addEventListener("click", showPreview);
-    saveBtn.addEventListener("click", createIssue);
-    deleteBtn.addEventListener("click", createDeleteIssue);
-  </script>
+    const title = "[DELETE_WORD]";
+    const body =
+`### Georgian Word
+
+${georgian}`;
+
+    const issueUrl =
+      `https://github.com/${repoOwner}/${repoName}/issues/new?title=${encodeURIComponent(title)}&body=${encodeURIComponent(body)}`;
+
+    window.open(issueUrl, "_blank");
+  }
+
+  previewBtn.addEventListener("click", showPreview);
+  saveBtn.addEventListener("click", createIssue);
+  deleteBtn.addEventListener("click", createDeleteIssue);
+</script>
 </body>
 </html>
