@@ -10,7 +10,6 @@ permissions:
 
 jobs:
   add-word:
-    if: contains(github.event.issue.labels.*.name, 'add-word')
     runs-on: ubuntu-latest
 
     steps:
