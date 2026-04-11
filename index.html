@@ -115,7 +115,8 @@
     </div>
 
     <button type="button" id="saveBtn">Сохранить</button>
-
+    <button type="button" id="deleteBtn">Удалить слово</button>
+    
     <div class="note">
       Можно вставлять обычную GitHub ссылку вида
       <br><br>
@@ -137,7 +138,8 @@
     const previewImage = document.getElementById("previewImage");
     const previewMessage = document.getElementById("previewMessage");
     const saveBtn = document.getElementById("saveBtn");
-
+    const deleteBtn = document.getElementById("deleteBtn");
+    
     function normalizeGitHubImageUrl(url) {
       if (!url) return "";
 
@@ -195,6 +197,26 @@
         return;
       }
 
+      function createDeleteIssue() {
+  const georgian = georgianInput.value.trim();
+
+  if (!georgian) {
+    alert("Введи грузинское слово для удаления.");
+    return;
+  }
+
+  const title = "[DELETE_WORD]";
+  const body =
+`### Georgian Word
+
+${georgian}`;
+
+  const issueUrl =
+    `https://github.com/${repoOwner}/${repoName}/issues/new?title=${encodeURIComponent(title)}&body=${encodeURIComponent(body)}`;
+
+  window.open(issueUrl, "_blank");
+}
+      
       const title = "[ADD_WORD]";
       const body =
 `### Georgian Word
@@ -221,6 +243,7 @@ ${imageUrl}`;
 
     previewBtn.addEventListener("click", showPreview);
     saveBtn.addEventListener("click", createIssue);
+    deleteBtn.addEventListener("click", createDeleteIssue);
   </script>
 </body>
 </html>
