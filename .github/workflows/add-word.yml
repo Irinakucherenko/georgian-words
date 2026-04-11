@@ -10,6 +10,7 @@ permissions:
 
 jobs:
   add-word:
+    if: startsWith(github.event.issue.title, '[ADD_WORD]')
     runs-on: ubuntu-latest
 
     steps:
@@ -44,12 +45,16 @@ jobs:
             const raw = fs.readFileSync(filePath, 'utf8');
             const data = JSON.parse(raw);
 
-            const words = data.words || [];
-            const nextId = words.length > 0
-              ? Math.max(...words.map(w => Number(w.id) || 0)) + 1
+            if (!Array.isArray(data.words)) {
+              core.setFailed('words.json does not contain a valid words array.');
+              return;
+            }
+
+            const nextId = data.words.length > 0
+              ? Math.max(...data.words.filter(Boolean).map(w => Number(w.id) || 0)) + 1
               : 1;
 
-            words.push({
+            data.words.push({
               id: nextId,
               georgian,
               russian,
@@ -58,7 +63,6 @@ jobs:
             });
 
             data.version = (Number(data.version) || 0) + 1;
-            data.words = words;
 
             fs.writeFileSync(filePath, JSON.stringify(data, null, 2), 'utf8');
 
