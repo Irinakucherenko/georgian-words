@@ -1,7 +1,8 @@
 name: Add Word
 description: Add new Georgian word
 title: "[ADD_WORD]"
-labels: ["add-word"]
+labels:
+  - add-word
 
 body:
   - type: input
@@ -18,10 +19,14 @@ body:
     validations:
       required: true
 
-  - type: input
+  - type: dropdown
     id: category
     attributes:
       label: Category
+      options:
+        - basic
+        - body
+        - food
     validations:
       required: true
 
