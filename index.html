@@ -31,7 +31,7 @@
       font-weight: bold;
     }
 
-    input, select, textarea, button {
+    input, select, button {
       width: 100%;
       padding: 12px;
       font-size: 16px;
@@ -59,12 +59,38 @@
       border-radius: 10px;
       font-size: 14px;
     }
+
+    .preview {
+      margin-top: 16px;
+      text-align: center;
+    }
+
+    .preview img {
+      max-width: 220px;
+      max-height: 220px;
+      border-radius: 12px;
+      border: 1px solid #ddd;
+      display: none;
+      margin-top: 10px;
+    }
+
+    .error {
+      color: #b00020;
+      font-size: 14px;
+      margin-top: 10px;
+    }
+
+    .success {
+      color: #146c2e;
+      font-size: 14px;
+      margin-top: 10px;
+    }
   </style>
 </head>
 <body>
   <div class="card">
     <h1>Georgian Words Admin</h1>
-    <p>Форма для будущего добавления слов.</p>
+    <p>Добавление нового слова через GitHub Issue.</p>
 
     <label for="georgian">Грузинское слово</label>
     <input id="georgian" type="text" placeholder="Например: წყალი" />
@@ -80,13 +106,121 @@
     </select>
 
     <label for="imageUrl">Ссылка на картинку</label>
-    <input id="imageUrl" type="text" placeholder="https://raw.githubusercontent.com/..." />
+    <input id="imageUrl" type="text" placeholder="Вставь обычную ссылку GitHub или raw URL" />
 
-    <button type="button">Сохранить</button>
+    <div class="preview">
+      <button type="button" id="previewBtn">Показать превью</button>
+      <img id="previewImage" alt="Preview" />
+      <div id="previewMessage"></div>
+    </div>
+
+    <button type="button" id="saveBtn">Сохранить</button>
 
     <div class="note">
-      Пока это только интерфейс. На следующем шаге подключим безопасную отправку.
+      Можно вставлять обычную GitHub ссылку вида
+      <br><br>
+      https://github.com/.../blob/main/images/file.jpg
+      <br><br>
+      Страница сама преобразует её в raw-ссылку.
     </div>
   </div>
+
+  <script>
+    const repoOwner = "Irinakucherenko";
+    const repoName = "georgian-words";
+
+    const georgianInput = document.getElementById("georgian");
+    const russianInput = document.getElementById("russian");
+    const categoryInput = document.getElementById("category");
+    const imageUrlInput = document.getElementById("imageUrl");
+    const previewBtn = document.getElementById("previewBtn");
+    const previewImage = document.getElementById("previewImage");
+    const previewMessage = document.getElementById("previewMessage");
+    const saveBtn = document.getElementById("saveBtn");
+
+    function normalizeGitHubImageUrl(url) {
+      if (!url) return "";
+
+      let result = url.trim();
+
+      if (result.includes("github.com") && result.includes("/blob/")) {
+        result = result
+          .replace("https://github.com/", "https://raw.githubusercontent.com/")
+          .replace("/blob/", "/");
+      }
+
+      if (result.endsWith("?raw=true")) {
+        result = result.replace("?raw=true", "");
+      }
+
+      return result;
+    }
+
+    function showPreview() {
+      const rawUrl = normalizeGitHubImageUrl(imageUrlInput.value);
+
+      previewImage.style.display = "none";
+      previewMessage.className = "";
+      previewMessage.textContent = "";
+
+      if (!rawUrl) {
+        previewMessage.className = "error";
+        previewMessage.textContent = "Сначала вставь ссылку на картинку.";
+        return;
+      }
+
+      previewImage.onload = () => {
+        previewMessage.className = "success";
+        previewMessage.textContent = "Картинка загружается правильно.";
+        previewImage.style.display = "inline-block";
+      };
+
+      previewImage.onerror = () => {
+        previewImage.style.display = "none";
+        previewMessage.className = "error";
+        previewMessage.textContent = "Не удалось загрузить картинку. Проверь ссылку.";
+      };
+
+      previewImage.src = rawUrl;
+    }
+
+    function createIssue() {
+      const georgian = georgianInput.value.trim();
+      const russian = russianInput.value.trim();
+      const category = categoryInput.value.trim();
+      const imageUrl = normalizeGitHubImageUrl(imageUrlInput.value);
+
+      if (!georgian || !russian || !category || !imageUrl) {
+        alert("Заполни все поля.");
+        return;
+      }
+
+      const title = "[ADD_WORD]";
+      const body =
+`### Georgian Word
+
+${georgian}
+
+### Russian Translation
+
+${russian}
+
+### Category
+
+${category}
+
+### Image URL
+
+${imageUrl}`;
+
+      const issueUrl =
+        `https://github.com/${repoOwner}/${repoName}/issues/new?title=${encodeURIComponent(title)}&body=${encodeURIComponent(body)}`;
+
+      window.open(issueUrl, "_blank");
+    }
+
+    previewBtn.addEventListener("click", showPreview);
+    saveBtn.addEventListener("click", createIssue);
+  </script>
 </body>
 </html>
