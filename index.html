@@ -413,6 +413,7 @@
     const workerBaseUrl = "https://georgian-words-worker.irina-georgian.workers.dev";
     const workerAddUrl = `${workerBaseUrl}/add-word`;
     const workerBulkAddUrl = `${workerBaseUrl}/bulk-add`;
+    const workerBulkDeleteUrl = `${workerBaseUrl}/bulk-delete`;
     const defaultImagePrefix = `https://raw.githubusercontent.com/${repoOwner}/${repoName}/main/images/`;
 
     const wordList = document.getElementById("wordList");
@@ -718,34 +719,65 @@
       }
     }
 
-    function openDeleteIssue() {
-      if (selectedWordsForDelete.size === 0) {
-        alert("Отметь хотя бы одно слово для удаления.");
-        return;
-      }
+    async function openDeleteIssue() {
+  if (selectedWordsForDelete.size === 0) {
+    alert("Отметь хотя бы одно слово для удаления.");
+    return;
+  }
 
-      const wordsToDelete = allWords.filter(word => selectedWordsForDelete.has(word.id));
+  const wordsToDelete = allWords
+    .filter(word => selectedWordsForDelete.has(word.id))
+    .map(word => word.georgian)
+    .filter(Boolean);
 
-      const confirmed = confirm(`Ты точно хочешь удалить ${wordsToDelete.length} слов(а)?`);
+  if (wordsToDelete.length === 0) {
+    alert("Не удалось определить слова для удаления.");
+    return;
+  }
 
-      if (!confirmed) {
-        return;
-      }
+  const confirmed = confirm(`Ты точно хочешь удалить ${wordsToDelete.length} слов(а)?`);
 
-      const title = "[DELETE_WORD]";
-      const body =
-`### Delete Words
+  if (!confirmed) {
+    return;
+  }
 
-${wordsToDelete.map(w => w.georgian).join("\n")}`;
+  deleteBtn.disabled = true;
 
-      const issueUrl =
-        `https://github.com/${repoOwner}/${repoName}/issues/new?title=${encodeURIComponent(title)}&body=${encodeURIComponent(body)}`;
+  try {
+    const response = await fetch(workerBulkDeleteUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        georgianWords: wordsToDelete
+      })
+    });
 
-      window.open(issueUrl, "_blank");
+    const result = await response.json();
 
-      selectedWordsForDelete.clear();
+    if (!response.ok || !result.success) {
+      alert(result.message || "Ошибка при удалении слов.");
+      return;
+    }
+
+    alert(`Удалено слов: ${result.deletedCount}`);
+
+    selectedWordsForDelete.clear();
+
+    if (selectedWord && wordsToDelete.includes(selectedWord.georgian)) {
+      resetForm();
+    } else {
       renderList();
     }
+
+    await loadWords();
+  } catch (error) {
+    alert("Ошибка соединения с сервером.");
+  } finally {
+    deleteBtn.disabled = false;
+  }
+}
 
     function parseBulkInput(text) {
       const lines = text
