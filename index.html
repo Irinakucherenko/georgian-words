@@ -89,10 +89,27 @@
       background: #f0f3f8;
     }
 
+    .word-item-inner {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .word-checkbox {
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+      flex-shrink: 0;
+      margin: 0;
+    }
+
     .word-line {
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      min-width: 0;
+      flex: 1;
     }
 
     .word-georgian-inline {
@@ -428,6 +445,7 @@
     let allWords = [];
     let filteredWords = [];
     let selectedWord = null;
+    let selectedWordsForDelete = new Set();
 
     const georgianCollator = new Intl.Collator("ka", {
       sensitivity: "base",
@@ -549,25 +567,53 @@
 
       wordList.innerHTML = filteredWords.map(word => {
         const active = selectedWord && selectedWord.id === word.id ? "active" : "";
+        const checked = selectedWordsForDelete.has(word.id) ? "checked" : "";
         const title = `${word.georgian || ""} - ${word.russian || ""}`;
 
         return `
           <div class="word-item ${active}" data-id="${escapeHtml(String(word.id ?? ""))}" title="${escapeHtml(title)}">
-            <div class="word-line">
-              <span class="word-georgian-inline">${escapeHtml(word.georgian || "")}</span>
-              <span class="word-separator">-</span>
-              <span class="word-russian-inline">${escapeHtml(word.russian || "")}</span>
+            <div class="word-item-inner">
+              <input
+                type="checkbox"
+                class="word-checkbox"
+                data-checkbox-id="${escapeHtml(String(word.id ?? ""))}"
+                ${checked}
+              />
+              <div class="word-line">
+                <span class="word-georgian-inline">${escapeHtml(word.georgian || "")}</span>
+                <span class="word-separator">-</span>
+                <span class="word-russian-inline">${escapeHtml(word.russian || "")}</span>
+              </div>
             </div>
           </div>
         `;
       }).join("");
 
       document.querySelectorAll(".word-item").forEach(item => {
-        item.addEventListener("click", () => {
+        item.addEventListener("click", (e) => {
+          if (e.target.classList.contains("word-checkbox")) {
+            return;
+          }
+
           const id = Number(item.getAttribute("data-id"));
           const word = allWords.find(w => Number(w.id) === id);
+
           if (word) {
             fillForm(word);
+          }
+        });
+      });
+
+      document.querySelectorAll(".word-checkbox").forEach(checkbox => {
+        checkbox.addEventListener("click", (e) => {
+          e.stopPropagation();
+
+          const id = Number(checkbox.getAttribute("data-checkbox-id"));
+
+          if (checkbox.checked) {
+            selectedWordsForDelete.add(id);
+          } else {
+            selectedWordsForDelete.delete(id);
           }
         });
       });
@@ -673,14 +719,14 @@
     }
 
     function openDeleteIssue() {
-      const georgian = georgianInput.value.trim();
-
-      if (!georgian) {
-        alert("Выбери слово или введи грузинское слово.");
+      if (selectedWordsForDelete.size === 0) {
+        alert("Отметь хотя бы одно слово для удаления.");
         return;
       }
 
-      const confirmed = confirm(`Ты точно хочешь удалить слово "${georgian}"?`);
+      const wordsToDelete = allWords.filter(word => selectedWordsForDelete.has(word.id));
+
+      const confirmed = confirm(`Ты точно хочешь удалить ${wordsToDelete.length} слов(а)?`);
 
       if (!confirmed) {
         return;
@@ -688,14 +734,17 @@
 
       const title = "[DELETE_WORD]";
       const body =
-`### Georgian Word
+`### Delete Words
 
-${georgian}`;
+${wordsToDelete.map(w => w.georgian).join("\n")}`;
 
       const issueUrl =
         `https://github.com/${repoOwner}/${repoName}/issues/new?title=${encodeURIComponent(title)}&body=${encodeURIComponent(body)}`;
 
       window.open(issueUrl, "_blank");
+
+      selectedWordsForDelete.clear();
+      renderList();
     }
 
     function parseBulkInput(text) {
