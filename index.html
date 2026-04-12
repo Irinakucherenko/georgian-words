@@ -401,7 +401,7 @@
           <br>
           <b>Массовое добавление</b> принимает несколько строк сразу
           <br>
-          <b>Удалить выбранное</b> открывает issue на удаление
+          <b>Удалить выбранное</b> удаляет выбранные слова через worker
         </div>
       </div>
     </main>
@@ -719,7 +719,7 @@
       }
     }
 
-async function openDeleteIssue() {
+async function deleteSelectedWords() {
   if (selectedWordsForDelete.size === 0) {
     alert("Отметь хотя бы одно слово для удаления.");
     return;
@@ -890,7 +890,7 @@ async function openDeleteIssue() {
     bulkBtn.addEventListener("click", showBulkForm);
     refreshBtn.addEventListener("click", loadWords);
     saveBtn.addEventListener("click", addWordThroughWorker);
-    deleteBtn.addEventListener("click", openDeleteIssue);
+    deleteBtn.addEventListener("click", deleteSelectedWords);
 
     bulkSaveBtn.addEventListener("click", bulkAddWords);
     bulkClearBtn.addEventListener("click", () => {
