@@ -1,5 +1,5 @@
 {
-  "version": 22,
+  "version": 23,
   "words": [
     {
       "id": 1,
@@ -88,22 +88,6 @@
       "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/shop.jpg",
       "category": "basic",
       "createdAt": "2026-04-12T14:34:28.048Z"
-    },
-    {
-      "id": 13,
-      "georgian": "ტესტ1",
-      "russian": "тест1",
-      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/test1.jpg",
-      "category": "basic",
-      "createdAt": "2026-04-12T14:36:41.698Z"
-    },
-    {
-      "id": 14,
-      "georgian": "ტესტ2",
-      "russian": "тест2",
-      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/test2.jpg",
-      "category": "basic",
-      "createdAt": "2026-04-12T14:36:41.698Z"
     },
     {
       "id": 15,
