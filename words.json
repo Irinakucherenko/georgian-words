@@ -1,5 +1,5 @@
 {
-  "version": 15,
+  "version": 16,
   "words": [
     {
       "id": 1,
@@ -64,14 +64,6 @@
       "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/house.jpg",
       "category": "basic",
       "createdAt": "2026-04-11T17:07:19.998Z"
-    },
-    {
-      "id": 9,
-      "georgian": "ტესტი",
-      "russian": "тест",
-      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/test.jpg",
-      "category": "basic",
-      "createdAt": "2026-04-12T14:09:20.794Z"
     },
     {
       "id": 10,
