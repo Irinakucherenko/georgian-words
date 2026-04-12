@@ -114,7 +114,7 @@
     }
 
     .card {
-      max-width: 760px;
+      max-width: 860px;
       background: white;
       padding: 24px;
       border-radius: 18px;
@@ -151,9 +151,19 @@
       color: white;
     }
 
+    .success-btn {
+      background: #146c2e;
+      color: white;
+    }
+
     h2 {
       margin-top: 0;
       margin-bottom: 16px;
+    }
+
+    h3 {
+      margin-top: 0;
+      margin-bottom: 12px;
     }
 
     label {
@@ -164,12 +174,19 @@
     }
 
     input,
-    select {
+    select,
+    textarea {
       width: 100%;
       padding: 12px;
       border: 1px solid #ccc;
       border-radius: 10px;
       font-size: 15px;
+      font-family: Arial, sans-serif;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 180px;
     }
 
     .preview-block {
@@ -215,6 +232,45 @@
       color: #777;
       padding: 16px;
       font-size: 14px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .bulk-block {
+      margin-top: 20px;
+      padding: 18px;
+      background: #fafafa;
+      border: 1px solid #eee;
+      border-radius: 14px;
+    }
+
+    .bulk-example {
+      margin-top: 10px;
+      padding: 12px;
+      background: #f3f6fb;
+      border-radius: 10px;
+      font-size: 13px;
+      line-height: 1.5;
+      white-space: pre-line;
+    }
+
+    .bulk-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 16px;
+    }
+
+    .bulk-result {
+      margin-top: 16px;
+      padding: 12px;
+      background: #f8f9fb;
+      border-radius: 10px;
+      font-size: 14px;
+      line-height: 1.5;
+      white-space: pre-line;
     }
 
     @media (max-width: 900px) {
@@ -265,39 +321,68 @@
       <div class="card">
         <div class="top-row">
           <button class="secondary" id="newBtn" type="button">Создать новое</button>
+          <button class="secondary" id="bulkBtn" type="button">Массовое добавление</button>
           <button class="secondary" id="refreshBtn" type="button">Обновить список</button>
           <button class="primary" id="saveBtn" type="button">Сохранить изменения</button>
           <button class="danger" id="deleteBtn" type="button">Удалить выбранное</button>
         </div>
 
-        <h2 id="formTitle">Новое слово</h2>
+        <div id="singleFormBlock">
+          <h2 id="formTitle">Новое слово</h2>
 
-        <label for="georgian">Грузинское слово</label>
-        <input id="georgian" type="text" placeholder="Например: წყალი" />
+          <label for="georgian">Грузинское слово</label>
+          <input id="georgian" type="text" placeholder="Например: წყალი" />
 
-        <label for="russian">Русский перевод</label>
-        <input id="russian" type="text" placeholder="Например: вода" />
+          <label for="russian">Русский перевод</label>
+          <input id="russian" type="text" placeholder="Например: вода" />
 
-        <label for="category">Категория</label>
-        <select id="category">
-          <option value="basic">basic</option>
-          <option value="body">body</option>
-          <option value="food">food</option>
-        </select>
+          <label for="category">Категория</label>
+          <select id="category">
+            <option value="basic">basic</option>
+            <option value="body">body</option>
+            <option value="food">food</option>
+          </select>
 
-        <label for="imageUrl">Ссылка на картинку</label>
-        <input id="imageUrl" type="text" placeholder="Вставь GitHub ссылку или raw URL" />
+          <label for="imageUrl">Ссылка на картинку</label>
+          <input id="imageUrl" type="text" placeholder="Вставь GitHub ссылку или raw URL" />
 
-        <div class="preview-block">
-          <button class="secondary" id="previewBtn" type="button">Показать превью</button>
-          <div id="previewMessage" class="message"></div>
-          <img id="previewImage" alt="Preview" />
+          <div class="preview-block">
+            <button class="secondary" id="previewBtn" type="button">Показать превью</button>
+            <div id="previewMessage" class="message"></div>
+            <img id="previewImage" alt="Preview" />
+          </div>
+        </div>
+
+        <div id="bulkBlock" class="bulk-block hidden">
+          <h3>Массовое добавление слов</h3>
+
+          <div>Одна строка = одно слово</div>
+
+          <div class="bulk-example">Формат:
+грузинское слово | русский перевод | категория | имя_файла.jpg
+
+Пример:
+ხელი | рука | body | Hand.jpg
+წყალი | вода | basic | water.jpg
+პური | хлеб | food | bread.jpg</div>
+
+          <label for="bulkInput">Список слов</label>
+          <textarea id="bulkInput" placeholder="Вставь строки сюда"></textarea>
+
+          <div class="bulk-actions">
+            <button class="success-btn" id="bulkSaveBtn" type="button">Добавить все</button>
+            <button class="secondary" id="bulkClearBtn" type="button">Очистить</button>
+          </div>
+
+          <div id="bulkResult" class="bulk-result hidden"></div>
         </div>
 
         <div class="hint">
           Сейчас:
           <br><br>
-          <b>Сохранить изменения</b> открывает issue на редактирование
+          <b>Обычное добавление</b> работает для одного слова
+          <br>
+          <b>Массовое добавление</b> принимает несколько строк сразу
           <br>
           <b>Удалить выбранное</b> открывает issue на удаление
         </div>
@@ -308,6 +393,10 @@
   <script>
     const repoOwner = "Irinakucherenko";
     const repoName = "georgian-words";
+    const workerBaseUrl = "https://georgian-words-worker.irina-georgian.workers.dev";
+    const workerAddUrl = `${workerBaseUrl}/add-word`;
+    const workerBulkAddUrl = `${workerBaseUrl}/bulk-add`;
+    const defaultImagePrefix = `https://raw.githubusercontent.com/${repoOwner}/${repoName}/main/images/`;
 
     const wordList = document.getElementById("wordList");
     const searchInput = document.getElementById("searchInput");
@@ -324,9 +413,17 @@
     const previewMessage = document.getElementById("previewMessage");
 
     const newBtn = document.getElementById("newBtn");
+    const bulkBtn = document.getElementById("bulkBtn");
     const refreshBtn = document.getElementById("refreshBtn");
     const saveBtn = document.getElementById("saveBtn");
     const deleteBtn = document.getElementById("deleteBtn");
+
+    const singleFormBlock = document.getElementById("singleFormBlock");
+    const bulkBlock = document.getElementById("bulkBlock");
+    const bulkInput = document.getElementById("bulkInput");
+    const bulkSaveBtn = document.getElementById("bulkSaveBtn");
+    const bulkClearBtn = document.getElementById("bulkClearBtn");
+    const bulkResult = document.getElementById("bulkResult");
 
     let allWords = [];
     let filteredWords = [];
@@ -351,23 +448,47 @@
       return result.replace("?raw=true", "");
     }
 
-function resetForm() {
-  selectedWord = null;
-  formTitle.textContent = "Новое слово";
-  georgianInput.value = "";
-  russianInput.value = "";
-  categoryInput.value = "basic";
+    function toFullImageUrl(value) {
+      const trimmed = String(value || "").trim();
 
-  imageUrlInput.value =
-    "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/фото.jpg";
+      if (!trimmed) return "";
 
-  previewImage.style.display = "none";
-  previewImage.src = "";
-  previewMessage.textContent = "";
-  previewMessage.className = "message";
+      if (trimmed.startsWith("http://") || trimmed.startsWith("https://")) {
+        return normalizeGitHubImageUrl(trimmed);
+      }
 
-  renderList();
-}
+      return defaultImagePrefix + trimmed.replace(/^\/+/, "");
+    }
+
+    function showSingleForm() {
+      singleFormBlock.classList.remove("hidden");
+      bulkBlock.classList.add("hidden");
+      bulkResult.classList.add("hidden");
+    }
+
+    function showBulkForm() {
+      singleFormBlock.classList.add("hidden");
+      bulkBlock.classList.remove("hidden");
+      previewImage.style.display = "none";
+      previewImage.src = "";
+      previewMessage.textContent = "";
+      previewMessage.className = "message";
+    }
+
+    function resetForm() {
+      selectedWord = null;
+      formTitle.textContent = "Новое слово";
+      georgianInput.value = "";
+      russianInput.value = "";
+      categoryInput.value = "basic";
+      imageUrlInput.value = defaultImagePrefix + "фото.jpg";
+      previewImage.style.display = "none";
+      previewImage.src = "";
+      previewMessage.textContent = "";
+      previewMessage.className = "message";
+      showSingleForm();
+      renderList();
+    }
 
     function fillForm(word) {
       selectedWord = word;
@@ -378,6 +499,7 @@ function resetForm() {
       imageUrlInput.value = word.imageUrl || "";
       previewMessage.textContent = "";
       previewMessage.className = "message";
+      showSingleForm();
       renderList();
 
       if (imageUrlInput.value.trim()) {
@@ -506,39 +628,48 @@ function resetForm() {
       previewImage.src = rawUrl;
     }
 
-    function openAddIssue() {
+    async function addWordThroughWorker() {
       const georgian = georgianInput.value.trim();
       const russian = russianInput.value.trim();
       const category = categoryInput.value.trim();
-      const imageUrl = normalizeGitHubImageUrl(imageUrlInput.value);
+      const imageUrl = toFullImageUrl(imageUrlInput.value);
 
       if (!georgian || !russian || !category || !imageUrl) {
         alert("Заполни все поля.");
         return;
       }
 
-      const title = "[ADD_WORD]";
-      const body =
-`### Georgian Word
+      saveBtn.disabled = true;
 
-${georgian}
+      try {
+        const response = await fetch(workerAddUrl, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            georgian,
+            russian,
+            category,
+            imageUrl
+          })
+        });
 
-### Russian Translation
+        const result = await response.json();
 
-${russian}
+        if (!response.ok || !result.success) {
+          alert(result.message || "Ошибка при добавлении слова.");
+          return;
+        }
 
-### Category
-
-${category}
-
-### Image URL
-
-${imageUrl}`;
-
-      const issueUrl =
-        `https://github.com/${repoOwner}/${repoName}/issues/new?title=${encodeURIComponent(title)}&body=${encodeURIComponent(body)}`;
-
-      window.open(issueUrl, "_blank");
+        alert("Слово добавлено в список.");
+        resetForm();
+        await loadWords();
+      } catch (error) {
+        alert("Ошибка соединения с сервером.");
+      } finally {
+        saveBtn.disabled = false;
+      }
     }
 
     function openDeleteIssue() {
@@ -567,49 +698,105 @@ ${georgian}`;
       window.open(issueUrl, "_blank");
     }
 
-    function openEditIssue() {
-      if (!selectedWord) {
-        openAddIssue();
+    function parseBulkInput(text) {
+      const lines = text
+        .split("\n")
+        .map(line => line.trim())
+        .filter(Boolean);
+
+      const parsed = [];
+      const errors = [];
+
+      lines.forEach((line, index) => {
+        const parts = line.split("|").map(part => part.trim());
+
+        if (parts.length !== 4) {
+          errors.push(`Строка ${index + 1}: должно быть 4 поля через |`);
+          return;
+        }
+
+        const [georgian, russian, category, imageUrl] = parts;
+
+        if (!georgian || !russian || !category || !imageUrl) {
+          errors.push(`Строка ${index + 1}: одно из полей пустое`);
+          return;
+        }
+
+        parsed.push({
+          georgian,
+          russian,
+          category,
+          imageUrl: toFullImageUrl(imageUrl)
+        });
+      });
+
+      return { parsed, errors };
+    }
+
+    async function bulkAddWords() {
+      const text = bulkInput.value.trim();
+
+      bulkResult.classList.add("hidden");
+      bulkResult.textContent = "";
+
+      if (!text) {
+        alert("Вставь список слов.");
         return;
       }
 
-      const oldGeorgian = selectedWord.georgian || "";
-      const newGeorgian = georgianInput.value.trim();
-      const russian = russianInput.value.trim();
-      const category = categoryInput.value.trim();
-      const imageUrl = normalizeGitHubImageUrl(imageUrlInput.value);
+      const { parsed, errors } = parseBulkInput(text);
 
-      if (!oldGeorgian || !newGeorgian || !russian || !category || !imageUrl) {
-        alert("Заполни все поля.");
+      if (errors.length > 0) {
+        bulkResult.classList.remove("hidden");
+        bulkResult.textContent = errors.join("\n");
         return;
       }
 
-      const title = "[EDIT_WORD]";
-      const body =
-`### Old Georgian Word
+      bulkSaveBtn.disabled = true;
 
-${oldGeorgian}
+      try {
+        const response = await fetch(workerBulkAddUrl, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            words: parsed
+          })
+        });
 
-### New Georgian Word
+        const result = await response.json();
 
-${newGeorgian}
+        if (!response.ok || !result.success) {
+          bulkResult.classList.remove("hidden");
+          bulkResult.textContent = result.message || "Ошибка массового добавления.";
+          if (Array.isArray(result.skipped) && result.skipped.length > 0) {
+            bulkResult.textContent += "\n\nПропущено:\n" + result.skipped
+              .map(item => `${item.georgian || "(пусто)"} - ${item.reason}`)
+              .join("\n");
+          }
+          return;
+        }
 
-### Russian Translation
+        let textResult = `${result.message || "Готово."}`;
 
-${russian}
+        if (Array.isArray(result.skipped) && result.skipped.length > 0) {
+          textResult += "\n\nПропущено:\n" + result.skipped
+            .map(item => `${item.georgian || "(пусто)"} - ${item.reason}`)
+            .join("\n");
+        }
 
-### Category
+        bulkResult.classList.remove("hidden");
+        bulkResult.textContent = textResult;
 
-${category}
-
-### Image URL
-
-${imageUrl}`;
-
-      const issueUrl =
-        `https://github.com/${repoOwner}/${repoName}/issues/new?title=${encodeURIComponent(title)}&body=${encodeURIComponent(body)}`;
-
-      window.open(issueUrl, "_blank");
+        bulkInput.value = "";
+        await loadWords();
+      } catch (error) {
+        bulkResult.classList.remove("hidden");
+        bulkResult.textContent = "Ошибка соединения с сервером.";
+      } finally {
+        bulkSaveBtn.disabled = false;
+      }
     }
 
     searchInput.addEventListener("input", renderList);
@@ -617,11 +804,21 @@ ${imageUrl}`;
     previewBtn.addEventListener("click", showPreview);
     imageUrlInput.addEventListener("input", showPreview);
     imageUrlInput.addEventListener("change", showPreview);
+
     newBtn.addEventListener("click", resetForm);
+    bulkBtn.addEventListener("click", showBulkForm);
     refreshBtn.addEventListener("click", loadWords);
-    saveBtn.addEventListener("click", openEditIssue);
+    saveBtn.addEventListener("click", addWordThroughWorker);
     deleteBtn.addEventListener("click", openDeleteIssue);
 
+    bulkSaveBtn.addEventListener("click", bulkAddWords);
+    bulkClearBtn.addEventListener("click", () => {
+      bulkInput.value = "";
+      bulkResult.textContent = "";
+      bulkResult.classList.add("hidden");
+    });
+
+    resetForm();
     loadWords();
   </script>
 </body>
