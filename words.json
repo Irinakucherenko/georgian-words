@@ -1,5 +1,5 @@
 {
-  "version": 13,
+  "version": 14,
   "words": [
     {
       "id": 1,
@@ -72,6 +72,14 @@
       "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/test.jpg",
       "category": "basic",
       "createdAt": "2026-04-12T14:09:20.794Z"
+    },
+    {
+      "id": 10,
+      "georgian": "ყვავილი",
+      "russian": "цветок",
+      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/flower.jpg",
+      "category": "basic",
+      "createdAt": "2026-04-12T14:20:05.518Z"
     }
   ]
 }
