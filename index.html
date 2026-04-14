@@ -290,6 +290,10 @@
       white-space: pre-line;
     }
 
+    #newCategoryWrap {
+      margin-top: 8px;
+    }
+
     @media (max-width: 900px) {
       .page {
         flex-direction: column;
@@ -354,11 +358,12 @@
           <input id="russian" type="text" placeholder="Например: вода" />
 
           <label for="category">Категория</label>
-          <select id="category">
-            <option value="basic">basic</option>
-            <option value="body">body</option>
-            <option value="food">food</option>
-          </select>
+          <select id="category"></select>
+
+          <div id="newCategoryWrap" class="hidden">
+            <label for="newCategory">Новая категория</label>
+            <input id="newCategory" type="text" placeholder="Введи новую категорию" />
+          </div>
 
           <label for="imageUrl">Ссылка на картинку</label>
           <input id="imageUrl" type="text" placeholder="Вставь GitHub ссылку или raw URL" />
@@ -424,6 +429,8 @@
     const georgianInput = document.getElementById("georgian");
     const russianInput = document.getElementById("russian");
     const categoryInput = document.getElementById("category");
+    const newCategoryWrap = document.getElementById("newCategoryWrap");
+    const newCategoryInput = document.getElementById("newCategory");
     const imageUrlInput = document.getElementById("imageUrl");
 
     const previewBtn = document.getElementById("previewBtn");
@@ -479,6 +486,80 @@
       return defaultImagePrefix + trimmed.replace(/^\/+/, "");
     }
 
+    function getAvailableCategories() {
+      const categories = Array.from(
+        new Set(
+          allWords
+            .map(word => String(word.category || "").trim().toLowerCase())
+            .filter(Boolean)
+        )
+      ).sort();
+
+      return categories;
+    }
+
+    function renderCategoryOptions(selectedValue = "basic") {
+      const categories = getAvailableCategories();
+      const newCategoryOption = "__new__";
+
+      categoryInput.innerHTML = "";
+
+      if (categories.length === 0) {
+        const option = document.createElement("option");
+        option.value = "basic";
+        option.textContent = "basic";
+        categoryInput.appendChild(option);
+      } else {
+        categories.forEach(category => {
+          const option = document.createElement("option");
+          option.value = category;
+          option.textContent = category;
+          categoryInput.appendChild(option);
+        });
+      }
+
+      const newOption = document.createElement("option");
+      newOption.value = newCategoryOption;
+      newOption.textContent = "Новая категория";
+      categoryInput.appendChild(newOption);
+
+      const normalizedSelectedValue = String(selectedValue || "").trim().toLowerCase();
+      const categoryExists = categories.includes(normalizedSelectedValue);
+
+      if (normalizedSelectedValue && categoryExists) {
+        categoryInput.value = normalizedSelectedValue;
+        newCategoryInput.value = "";
+        newCategoryWrap.classList.add("hidden");
+      } else if (normalizedSelectedValue && !categoryExists) {
+        categoryInput.value = newCategoryOption;
+        newCategoryInput.value = String(selectedValue).trim();
+        newCategoryWrap.classList.remove("hidden");
+      } else {
+        categoryInput.value = categories[0] || "basic";
+        newCategoryInput.value = "";
+        newCategoryWrap.classList.add("hidden");
+      }
+    }
+
+    function updateNewCategoryVisibility() {
+      const isNewCategory = categoryInput.value === "__new__";
+
+      if (isNewCategory) {
+        newCategoryWrap.classList.remove("hidden");
+      } else {
+        newCategoryWrap.classList.add("hidden");
+        newCategoryInput.value = "";
+      }
+    }
+
+    function getFinalCategoryValue() {
+      if (categoryInput.value === "__new__") {
+        return newCategoryInput.value.trim().toLowerCase();
+      }
+
+      return String(categoryInput.value || "").trim().toLowerCase();
+    }
+
     function showSingleForm() {
       singleFormBlock.classList.remove("hidden");
       bulkBlock.classList.add("hidden");
@@ -499,7 +580,9 @@
       formTitle.textContent = "Новое слово";
       georgianInput.value = "";
       russianInput.value = "";
-      categoryInput.value = "basic";
+      renderCategoryOptions("basic");
+      newCategoryInput.value = "";
+      newCategoryWrap.classList.add("hidden");
       imageUrlInput.value = defaultImagePrefix + "фото.jpg";
       previewImage.style.display = "none";
       previewImage.src = "";
@@ -514,7 +597,7 @@
       formTitle.textContent = `Редактирование: ${word.georgian}`;
       georgianInput.value = word.georgian || "";
       russianInput.value = word.russian || "";
-      categoryInput.value = word.category || "basic";
+      renderCategoryOptions(word.category || "basic");
       imageUrlInput.value = word.imageUrl || "";
       previewMessage.textContent = "";
       previewMessage.className = "message";
@@ -642,6 +725,7 @@
           ? data.words.filter(Boolean)
           : [];
 
+        renderCategoryOptions(categoryInput.value || "basic");
         renderList();
       } catch (error) {
         wordList.innerHTML = `<div class="empty">Не удалось загрузить список слов</div>`;
@@ -678,7 +762,7 @@
     async function addWordThroughWorker() {
       const georgian = georgianInput.value.trim();
       const russian = russianInput.value.trim();
-      const category = categoryInput.value.trim();
+      const category = getFinalCategoryValue();
       const imageUrl = toFullImageUrl(imageUrlInput.value);
 
       if (!georgian || !russian || !category || !imageUrl) {
@@ -719,65 +803,65 @@
       }
     }
 
-async function deleteSelectedWords() {
-  if (selectedWordsForDelete.size === 0) {
-    alert("Отметь хотя бы одно слово для удаления.");
-    return;
-  }
+    async function deleteSelectedWords() {
+      if (selectedWordsForDelete.size === 0) {
+        alert("Отметь хотя бы одно слово для удаления.");
+        return;
+      }
 
-  const wordsToDelete = allWords
-    .filter(word => selectedWordsForDelete.has(word.id))
-    .map(word => word.georgian)
-    .filter(Boolean);
+      const wordsToDelete = allWords
+        .filter(word => selectedWordsForDelete.has(word.id))
+        .map(word => word.georgian)
+        .filter(Boolean);
 
-  if (wordsToDelete.length === 0) {
-    alert("Не удалось определить слова для удаления.");
-    return;
-  }
+      if (wordsToDelete.length === 0) {
+        alert("Не удалось определить слова для удаления.");
+        return;
+      }
 
-  const confirmed = confirm(`Ты точно хочешь удалить ${wordsToDelete.length} слов(а)?`);
+      const confirmed = confirm(`Ты точно хочешь удалить ${wordsToDelete.length} слов(а)?`);
 
-  if (!confirmed) {
-    return;
-  }
+      if (!confirmed) {
+        return;
+      }
 
-  deleteBtn.disabled = true;
+      deleteBtn.disabled = true;
 
-  try {
-    const response = await fetch(workerBulkDeleteUrl, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        georgianWords: wordsToDelete
-      })
-    });
+      try {
+        const response = await fetch(workerBulkDeleteUrl, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            georgianWords: wordsToDelete
+          })
+        });
 
-    const result = await response.json();
+        const result = await response.json();
 
-    if (!response.ok || !result.success) {
-      alert(result.message || "Ошибка при удалении слов.");
-      return;
+        if (!response.ok || !result.success) {
+          alert(result.message || "Ошибка при удалении слов.");
+          return;
+        }
+
+        alert(`Удалено слов: ${result.deletedCount}`);
+
+        selectedWordsForDelete.clear();
+
+        if (selectedWord && wordsToDelete.includes(selectedWord.georgian)) {
+          resetForm();
+        } else {
+          renderList();
+        }
+
+        await loadWords();
+      } catch (error) {
+        alert("Ошибка соединения с сервером.");
+      } finally {
+        deleteBtn.disabled = false;
+      }
     }
-
-    alert(`Удалено слов: ${result.deletedCount}`);
-
-    selectedWordsForDelete.clear();
-
-    if (selectedWord && wordsToDelete.includes(selectedWord.georgian)) {
-      resetForm();
-    } else {
-      renderList();
-    }
-
-    await loadWords();
-  } catch (error) {
-    alert("Ошибка соединения с сервером.");
-  } finally {
-    deleteBtn.disabled = false;
-  }
-}
 
     function parseBulkInput(text) {
       const lines = text
@@ -806,7 +890,7 @@ async function deleteSelectedWords() {
         parsed.push({
           georgian,
           russian,
-          category,
+          category: String(category).trim().toLowerCase(),
           imageUrl: toFullImageUrl(imageUrl)
         });
       });
@@ -885,6 +969,7 @@ async function deleteSelectedWords() {
     previewBtn.addEventListener("click", showPreview);
     imageUrlInput.addEventListener("input", showPreview);
     imageUrlInput.addEventListener("change", showPreview);
+    categoryInput.addEventListener("change", updateNewCategoryVisibility);
 
     newBtn.addEventListener("click", resetForm);
     bulkBtn.addEventListener("click", showBulkForm);
