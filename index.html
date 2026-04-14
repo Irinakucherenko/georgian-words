@@ -500,7 +500,7 @@
 
     function renderCategoryOptions(selectedValue = "basic") {
       const categories = getAvailableCategories();
-      const newCategoryOption = " ";
+      const newCategoryOption = "__new__";
 
       categoryInput.innerHTML = "";
 
@@ -583,7 +583,7 @@
       renderCategoryOptions("basic");
       newCategoryInput.value = "";
       newCategoryWrap.classList.add("hidden");
-      imageUrlInput.value = defaultImagePrefix;
+      imageUrlInput.value = defaultImagePrefix + "фото.jpg";
       previewImage.style.display = "none";
       previewImage.src = "";
       previewMessage.textContent = "";
