@@ -1,5 +1,5 @@
 {
-  "version": 27,
+  "version": 28,
   "words": [
     {
       "id": 2,
@@ -40,14 +40,6 @@
       "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/chair.jpg",
       "category": "basic",
       "createdAt": "2026-04-11T12:06:00.000Z"
-    },
-    {
-      "id": 7,
-      "georgian": "კარი",
-      "russian": "дверь",
-      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/door.jpg",
-      "category": "basic",
-      "createdAt": "2026-04-11T16:58:39.959Z"
     },
     {
       "id": 8,
