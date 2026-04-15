@@ -63,6 +63,73 @@
       padding: 8px;
     }
 
+    .list-toolbar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+      padding: 4px 2px 8px 2px;
+    }
+
+    .back-btn {
+      border: 1px solid #d6d6d6;
+      background: #fff;
+      border-radius: 10px;
+      padding: 8px 12px;
+      cursor: pointer;
+      font-size: 13px;
+    }
+
+    .list-title {
+      font-size: 13px;
+      color: #666;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .category-item {
+      background: #fff;
+      border: 1px solid #e6e6e6;
+      border-radius: 12px;
+      padding: 12px 14px;
+      margin-bottom: 8px;
+      cursor: pointer;
+      transition: 0.15s ease;
+    }
+
+    .category-item:hover {
+      background: #f9fafb;
+      border-color: #cfcfcf;
+    }
+
+    .category-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .category-name {
+      font-weight: 700;
+      font-size: 14px;
+      color: #222;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .category-count {
+      flex-shrink: 0;
+      font-size: 12px;
+      color: #555;
+      background: #eef2f7;
+      border-radius: 999px;
+      padding: 4px 8px;
+    }
+
     .word-item {
       background: #fff;
       border: 1px solid #e6e6e6;
@@ -314,6 +381,11 @@
       .word-line {
         white-space: normal;
       }
+
+      .category-name,
+      .list-title {
+        white-space: normal;
+      }
     }
   </style>
 </head>
@@ -454,6 +526,7 @@
     let filteredWords = [];
     let selectedWord = null;
     let selectedWordsForDelete = new Set();
+    let openedCategory = null;
 
     const georgianCollator = new Intl.Collator("ka", {
       sensitivity: "base",
@@ -633,23 +706,108 @@
       );
     }
 
-    function renderList() {
-      const query = searchInput.value.trim().toLowerCase();
+    function getWordsByCategory() {
+      const map = new Map();
 
+      allWords.forEach(word => {
+        const category = String(word.category || "").trim().toLowerCase() || "other";
+
+        if (!map.has(category)) {
+          map.set(category, []);
+        }
+
+        map.get(category).push(word);
+      });
+
+      return map;
+    }
+
+    function getFilteredCategories(query) {
+      const grouped = getWordsByCategory();
+      const categories = [];
+
+      grouped.forEach((words, category) => {
+        const matchesCategory = category.includes(query);
+
+        const matchesWord = words.some(word => {
+          const ge = String(word.georgian || "").toLowerCase();
+          const ru = String(word.russian || "").toLowerCase();
+          return ge.includes(query) || ru.includes(query);
+        });
+
+        if (!query || matchesCategory || matchesWord) {
+          categories.push({
+            name: category,
+            count: words.length
+          });
+        }
+      });
+
+      categories.sort((a, b) => a.name.localeCompare(b.name));
+      return categories;
+    }
+
+    function renderCategoryList(query) {
+      const categories = getFilteredCategories(query);
+
+      if (categories.length === 0) {
+        wordList.innerHTML = `<div class="empty">Категории не найдены</div>`;
+        return;
+      }
+
+      wordList.innerHTML = categories.map(category => `
+        <div class="category-item" data-category="${escapeHtml(category.name)}">
+          <div class="category-row">
+            <div class="category-name">${escapeHtml(category.name)}</div>
+            <div class="category-count">${category.count}</div>
+          </div>
+        </div>
+      `).join("");
+
+      document.querySelectorAll(".category-item").forEach(item => {
+        item.addEventListener("click", () => {
+          openedCategory = item.getAttribute("data-category");
+          selectedWord = null;
+          renderList();
+        });
+      });
+    }
+
+    function renderWordsInOpenedCategory(query) {
       filteredWords = allWords.filter(word => {
+        const category = String(word.category || "").trim().toLowerCase();
         const ge = String(word.georgian || "").toLowerCase();
         const ru = String(word.russian || "").toLowerCase();
-        return ge.includes(query) || ru.includes(query);
+
+        const matchesCategory = category === openedCategory;
+        const matchesQuery = !query || ge.includes(query) || ru.includes(query);
+
+        return matchesCategory && matchesQuery;
       });
 
       filteredWords = sortWords(filteredWords);
 
       if (filteredWords.length === 0) {
-        wordList.innerHTML = `<div class="empty">Ничего не найдено</div>`;
+        wordList.innerHTML = `
+          <div class="list-toolbar">
+            <button class="back-btn" id="backToCategoriesBtn" type="button">← Назад</button>
+            <div class="list-title">${escapeHtml(openedCategory)}</div>
+          </div>
+          <div class="empty">В этой категории ничего не найдено</div>
+        `;
+
+        const backBtn = document.getElementById("backToCategoriesBtn");
+        if (backBtn) {
+          backBtn.addEventListener("click", () => {
+            openedCategory = null;
+            selectedWord = null;
+            renderList();
+          });
+        }
         return;
       }
 
-      wordList.innerHTML = filteredWords.map(word => {
+      const wordsHtml = filteredWords.map(word => {
         const active = selectedWord && selectedWord.id === word.id ? "active" : "";
         const checked = selectedWordsForDelete.has(word.id) ? "checked" : "";
         const title = `${word.georgian || ""} - ${word.russian || ""}`;
@@ -672,6 +830,23 @@
           </div>
         `;
       }).join("");
+
+      wordList.innerHTML = `
+        <div class="list-toolbar">
+          <button class="back-btn" id="backToCategoriesBtn" type="button">← Назад</button>
+          <div class="list-title">${escapeHtml(openedCategory)} (${filteredWords.length})</div>
+        </div>
+        ${wordsHtml}
+      `;
+
+      const backBtn = document.getElementById("backToCategoriesBtn");
+      if (backBtn) {
+        backBtn.addEventListener("click", () => {
+          openedCategory = null;
+          selectedWord = null;
+          renderList();
+        });
+      }
 
       document.querySelectorAll(".word-item").forEach(item => {
         item.addEventListener("click", (e) => {
@@ -703,6 +878,27 @@
       });
     }
 
+    function renderList() {
+      const query = searchInput.value.trim().toLowerCase();
+
+      if (!openedCategory) {
+        renderCategoryList(query);
+        return;
+      }
+
+      const categoryStillExists = allWords.some(
+        word => String(word.category || "").trim().toLowerCase() === openedCategory
+      );
+
+      if (!categoryStillExists) {
+        openedCategory = null;
+        renderCategoryList(query);
+        return;
+      }
+
+      renderWordsInOpenedCategory(query);
+    }
+
     function escapeHtml(text) {
       return String(text)
         .replaceAll("&", "&amp;")
@@ -724,6 +920,13 @@
         allWords = Array.isArray(data.words)
           ? data.words.filter(Boolean)
           : [];
+
+        if (
+          openedCategory &&
+          !allWords.some(word => String(word.category || "").trim().toLowerCase() === openedCategory)
+        ) {
+          openedCategory = null;
+        }
 
         renderCategoryOptions(categoryInput.value || "basic");
         renderList();
