@@ -1,5 +1,5 @@
 {
-  "version": 25,
+  "version": 26,
   "words": [
     {
       "id": 2,
@@ -80,14 +80,6 @@
       "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/shop.jpg",
       "category": "basic",
       "createdAt": "2026-04-12T14:34:28.048Z"
-    },
-    {
-      "id": 15,
-      "georgian": "მაგიდა",
-      "russian": "стол",
-      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/table.jpg",
-      "category": "basic",
-      "createdAt": "2026-04-12T14:46:38.272Z"
     },
     {
       "id": 16,
