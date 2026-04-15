@@ -1,5 +1,5 @@
 {
-  "version": 44,
+  "version": 45,
   "words": [
     {
       "id": 1,
@@ -326,7 +326,7 @@
       "georgian": "საწოლი",
       "russian": "кровать",
       "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/bed_single.jpg",
-      "category": "bedroom",
+      "category": "home",
       "createdAt": "2026-04-15T10:57:33.441Z"
     },
     {
