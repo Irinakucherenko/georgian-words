@@ -490,6 +490,7 @@
     const workerBaseUrl = "https://georgian-words-worker.irina-georgian.workers.dev";
     const workerAddUrl = `${workerBaseUrl}/add-word`;
     const workerBulkAddUrl = `${workerBaseUrl}/bulk-add`;
+    const workerUpdateUrl = `${workerBaseUrl}/update-word`;
     const workerBulkDeleteUrl = `${workerBaseUrl}/bulk-delete`;
     const defaultImagePrefix = `https://raw.githubusercontent.com/${repoOwner}/${repoName}/main/images/`;
 
@@ -962,11 +963,12 @@
       previewImage.src = rawUrl;
     }
 
-    async function addWordThroughWorker() {
+    async function saveWord() {
       const georgian = georgianInput.value.trim();
       const russian = russianInput.value.trim();
       const category = getFinalCategoryValue();
       const imageUrl = toFullImageUrl(imageUrlInput.value);
+      const isEditMode = !!(selectedWord && selectedWord.id);
 
       if (!georgian || !russian || !category || !imageUrl) {
         alert("Заполни все поля.");
@@ -976,29 +978,55 @@
       saveBtn.disabled = true;
 
       try {
-        const response = await fetch(workerAddUrl, {
+        const url = isEditMode ? workerUpdateUrl : workerAddUrl;
+        const payload = isEditMode
+          ? {
+              id: selectedWord.id,
+              georgian,
+              russian,
+              category,
+              imageUrl
+            }
+          : {
+              georgian,
+              russian,
+              category,
+              imageUrl
+            };
+
+        const response = await fetch(url, {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
           },
-          body: JSON.stringify({
-            georgian,
-            russian,
-            category,
-            imageUrl
-          })
+          body: JSON.stringify(payload)
         });
 
         const result = await response.json();
 
         if (!response.ok || !result.success) {
-          alert(result.message || "Ошибка при добавлении слова.");
+          alert(result.message || (isEditMode
+            ? "Ошибка при редактировании слова."
+            : "Ошибка при добавлении слова."));
           return;
         }
 
-        alert("Слово добавлено в список.");
-        resetForm();
-        await loadWords();
+        alert(isEditMode ? "Слово обновлено." : "Слово добавлено в список.");
+
+        if (isEditMode) {
+          const updatedId = Number(selectedWord.id);
+          await loadWords();
+          const updatedWord = allWords.find(word => Number(word.id) === updatedId);
+
+          if (updatedWord) {
+            fillForm(updatedWord);
+          } else {
+            resetForm();
+          }
+        } else {
+          resetForm();
+          await loadWords();
+        }
       } catch (error) {
         alert("Ошибка соединения с сервером.");
       } finally {
@@ -1177,7 +1205,7 @@
     newBtn.addEventListener("click", resetForm);
     bulkBtn.addEventListener("click", showBulkForm);
     refreshBtn.addEventListener("click", loadWords);
-    saveBtn.addEventListener("click", addWordThroughWorker);
+    saveBtn.addEventListener("click", saveWord);
     deleteBtn.addEventListener("click", deleteSelectedWords);
 
     bulkSaveBtn.addEventListener("click", bulkAddWords);
