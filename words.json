@@ -1,5 +1,5 @@
 {
-  "version": 38,
+  "version": 39,
   "words": [
     {
       "id": 1,
@@ -558,7 +558,7 @@
       "georgian": "აბაზანა",
       "russian": "ванна",
       "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/bathroom.jpg",
-      "category": "bathroom",
+      "category": "home",
       "createdAt": "2026-04-15T10:57:33.441Z"
     },
     {
