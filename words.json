@@ -1,4 +1,677 @@
 {
-  "version": 32,
-  "words": []
+  "version": 33,
+  "words": [
+    {
+      "id": 1,
+      "georgian": "წყალი",
+      "russian": "вода",
+      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/water.jpg",
+      "category": "basic",
+      "createdAt": "2026-04-15T10:57:33.441Z"
+    },
+    {
+      "id": 2,
+      "georgian": "პური",
+      "russian": "хлеб",
+      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/bread.jpg",
+      "category": "food",
+      "createdAt": "2026-04-15T10:57:33.441Z"
+    },
+    {
+      "id": 3,
+      "georgian": "კარი",
+      "russian": "дверь",
+      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/door.jpg",
+      "category": "home",
+      "createdAt": "2026-04-15T10:57:33.441Z"
+    },
+    {
+      "id": 4,
+      "georgian": "სახლი",
+      "russian": "дом",
+      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/house.jpg",
+      "category": "places",
+      "createdAt": "2026-04-15T10:57:33.441Z"
+    },
+    {
+      "id": 5,
+      "georgian": "მაღაზია",
+      "russian": "магазин",
+      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/shop.jpg",
+      "category": "places",
+      "createdAt": "2026-04-15T10:57:33.441Z"
+    },
+    {
+      "id": 6,
+      "georgian": "მაგიდა",
+      "russian": "стол",
+      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/table.jpg",
+      "category": "home",
+      "createdAt": "2026-04-15T10:57:33.441Z"
+    },
+    {
+      "id": 7,
+      "georgian": "სკამი",
+      "russian": "стул",
+      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/chair.jpg",
+      "category": "home",
+      "createdAt": "2026-04-15T10:57:33.441Z"
+    },
+    {
+      "id": 8,
+      "georgian": "წიგნი",
+      "russian": "книга",
+      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/book.jpg",
+      "category": "school",
+      "createdAt": "2026-04-15T10:57:33.441Z"
+    },
+    {
+      "id": 9,
+      "georgian": "ხე",
+      "russian": "дерево",
+      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/tree.jpg",
+      "category": "nature",
+      "createdAt": "2026-04-15T10:57:33.441Z"
+    },
+    {
+      "id": 10,
+      "georgian": "ფანჯარა",
+      "russian": "окно",
+      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/window.jpg",
+      "category": "home",
+      "createdAt": "2026-04-15T10:57:33.441Z"
+    },
+    {
+      "id": 11,
+      "georgian": "გზა",
+      "russian": "дорога",
+      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/road.jpg",
+      "category": "city",
+      "createdAt": "2026-04-15T10:57:33.441Z"
+    },
+    {
+      "id": 12,
+      "georgian": "ყვავილი",
+      "russian": "цветок",
+      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/flower.jpg",
+      "category": "nature",
+      "createdAt": "2026-04-15T10:57:33.441Z"
+    },
+    {
+      "id": 13,
+      "georgian": "სავარძელი",
+      "russian": "кресло",
+      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/armchair.jpg",
+      "category": "home",
+      "createdAt": "2026-04-15T10:57:33.441Z"
+    },
+    {
+      "id": 14,
+      "georgian": "თარო",
+      "russian": "полка",
+      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/shelf.jpg",
+      "category": "home",
+      "createdAt": "2026-04-15T10:57:33.441Z"
+    },
+    {
+      "id": 15,
+      "georgian": "ღუმელი",
+      "russian": "духовка",
+      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/oven.jpg",
+      "category": "kitchen",
+      "createdAt": "2026-04-15T10:57:33.441Z"
+    },
+    {
+      "id": 16,
+      "georgian": "ნიჟარა",
+      "russian": "раковина",
+      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/sink.jpg",
+      "category": "bathroom",
+      "createdAt": "2026-04-15T10:57:33.441Z"
+    },
+    {
+      "id": 17,
+      "georgian": "ონკანი",
+      "russian": "кран",
+      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/faucet.jpg",
+      "category": "bathroom",
+      "createdAt": "2026-04-15T10:57:33.441Z"
+    },
+    {
+      "id": 18,
+      "georgian": "შხაპი",
+      "russian": "душ",
+      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/shower.jpg",
+      "category": "bathroom",
+      "createdAt": "2026-04-15T10:57:33.441Z"
+    },
+    {
+      "id": 19,
+      "georgian": "პირსახოცი",
+      "russian": "полотенце",
+      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/towel.jpg",
+      "category": "bathroom",
+      "createdAt": "2026-04-15T10:57:33.441Z"
+    },
+    {
+      "id": 20,
+      "georgian": "საბანი",
+      "russian": "одеяло",
+      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/blanket.jpg",
+      "category": "bedroom",
+      "createdAt": "2026-04-15T10:57:33.441Z"
+    },
+    {
+      "id": 21,
+      "georgian": "ლოგინი",
+      "russian": "кровать",
+      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/bed.jpg",
+      "category": "bedroom",
+      "createdAt": "2026-04-15T10:57:33.441Z"
+    },
+    {
+      "id": 22,
+      "georgian": "ხალიჩა",
+      "russian": "ковер",
+      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/carpet.jpg",
+      "category": "home",
+      "createdAt": "2026-04-15T10:57:33.441Z"
+    },
+    {
+      "id": 23,
+      "georgian": "ფარდა",
+      "russian": "занавеска",
+      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/curtain.jpg",
+      "category": "home",
+      "createdAt": "2026-04-15T10:57:33.441Z"
+    },
+    {
+      "id": 24,
+      "georgian": "განათება",
+      "russian": "лампа",
+      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/lamp.jpg",
+      "category": "home",
+      "createdAt": "2026-04-15T10:57:33.441Z"
+    },
+    {
+      "id": 25,
+      "georgian": "ხელი",
+      "russian": "рука",
+      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/hand.jpg",
+      "category": "body",
+      "createdAt": "2026-04-15T10:57:33.441Z"
+    },
+    {
+      "id": 26,
+      "georgian": "თავი",
+      "russian": "голова",
+      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/head.jpg",
+      "category": "body",
+      "createdAt": "2026-04-15T10:57:33.441Z"
+    },
+    {
+      "id": 27,
+      "georgian": "თვალი",
+      "russian": "глаз",
+      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/eye.jpg",
+      "category": "body",
+      "createdAt": "2026-04-15T10:57:33.441Z"
+    },
+    {
+      "id": 28,
+      "georgian": "ყური",
+      "russian": "ухо",
+      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/ear.jpg",
+      "category": "body",
+      "createdAt": "2026-04-15T10:57:33.441Z"
+    },
+    {
+      "id": 29,
+      "georgian": "ფეხი",
+      "russian": "нога",
+      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/foot.jpg",
+      "category": "body",
+      "createdAt": "2026-04-15T10:57:33.441Z"
+    },
+    {
+      "id": 30,
+      "georgian": "მზე",
+      "russian": "солнце",
+      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/sun.jpg",
+      "category": "nature",
+      "createdAt": "2026-04-15T10:57:33.441Z"
+    },
+    {
+      "id": 31,
+      "georgian": "მთვარე",
+      "russian": "луна",
+      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/moon.jpg",
+      "category": "nature",
+      "createdAt": "2026-04-15T10:57:33.441Z"
+    },
+    {
+      "id": 32,
+      "georgian": "მანქანა",
+      "russian": "машина",
+      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/car.jpg",
+      "category": "transport",
+      "createdAt": "2026-04-15T10:57:33.441Z"
+    },
+    {
+      "id": 33,
+      "georgian": "სკოლა",
+      "russian": "школа",
+      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/school.jpg",
+      "category": "places",
+      "createdAt": "2026-04-15T10:57:33.441Z"
+    },
+    {
+      "id": 34,
+      "georgian": "კალამი",
+      "russian": "ручка",
+      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/pen.jpg",
+      "category": "school",
+      "createdAt": "2026-04-15T10:57:33.441Z"
+    },
+    {
+      "id": 35,
+      "georgian": "ფანქარი",
+      "russian": "карандаш",
+      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/pencil.jpg",
+      "category": "school",
+      "createdAt": "2026-04-15T10:57:33.441Z"
+    },
+    {
+      "id": 36,
+      "georgian": "ფურცელი",
+      "russian": "лист бумаги",
+      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/paper.jpg",
+      "category": "school",
+      "createdAt": "2026-04-15T10:57:33.441Z"
+    },
+    {
+      "id": 37,
+      "georgian": "საათი",
+      "russian": "часы",
+      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/watch.jpg",
+      "category": "basic",
+      "createdAt": "2026-04-15T10:57:33.441Z"
+    },
+    {
+      "id": 38,
+      "georgian": "თეფში",
+      "russian": "тарелка",
+      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/plate.jpg",
+      "category": "kitchen",
+      "createdAt": "2026-04-15T10:57:33.441Z"
+    },
+    {
+      "id": 39,
+      "georgian": "გაზქურა",
+      "russian": "плита",
+      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/stove.jpg",
+      "category": "kitchen",
+      "createdAt": "2026-04-15T10:57:33.441Z"
+    },
+    {
+      "id": 40,
+      "georgian": "კარადა",
+      "russian": "шкаф",
+      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/wardrobe.jpg",
+      "category": "home",
+      "createdAt": "2026-04-15T10:57:33.441Z"
+    },
+    {
+      "id": 41,
+      "georgian": "საწოლი",
+      "russian": "кровать",
+      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/bed2.jpg",
+      "category": "bedroom",
+      "createdAt": "2026-04-15T10:57:33.441Z"
+    },
+    {
+      "id": 42,
+      "georgian": "ბალიში",
+      "russian": "подушка",
+      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/pillow.jpg",
+      "category": "bedroom",
+      "createdAt": "2026-04-15T10:57:33.441Z"
+    },
+    {
+      "id": 43,
+      "georgian": "ხილი",
+      "russian": "фрукты",
+      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/fruit_basket.jpg",
+      "category": "food",
+      "createdAt": "2026-04-15T10:57:33.441Z"
+    },
+    {
+      "id": 44,
+      "georgian": "ჭიქა",
+      "russian": "стакан",
+      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/glass.jpg",
+      "category": "kitchen",
+      "createdAt": "2026-04-15T10:57:33.441Z"
+    },
+    {
+      "id": 45,
+      "georgian": "მაცივარი",
+      "russian": "холодильник",
+      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/fridge.jpg",
+      "category": "kitchen",
+      "createdAt": "2026-04-15T10:57:33.441Z"
+    },
+    {
+      "id": 46,
+      "georgian": "კოვზი",
+      "russian": "ложка",
+      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/spoon.jpg",
+      "category": "kitchen",
+      "createdAt": "2026-04-15T10:57:33.441Z"
+    },
+    {
+      "id": 47,
+      "georgian": "ჩანგალი",
+      "russian": "вилка",
+      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/fork.jpg",
+      "category": "kitchen",
+      "createdAt": "2026-04-15T10:57:33.441Z"
+    },
+    {
+      "id": 48,
+      "georgian": "დანა",
+      "russian": "нож",
+      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/knife.jpg",
+      "category": "kitchen",
+      "createdAt": "2026-04-15T10:57:33.441Z"
+    },
+    {
+      "id": 49,
+      "georgian": "ბოსტნეული",
+      "russian": "овощи",
+      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/vegetables.jpg",
+      "category": "food",
+      "createdAt": "2026-04-15T10:57:33.441Z"
+    },
+    {
+      "id": 50,
+      "georgian": "რძე",
+      "russian": "молоко",
+      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/milk.jpg",
+      "category": "food",
+      "createdAt": "2026-04-15T10:57:33.441Z"
+    },
+    {
+      "id": 51,
+      "georgian": "მატარებელი",
+      "russian": "поезд",
+      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/train.jpg",
+      "category": "transport",
+      "createdAt": "2026-04-15T10:57:33.441Z"
+    },
+    {
+      "id": 52,
+      "georgian": "თვითმფრინავი",
+      "russian": "самолет",
+      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/airplane.jpg",
+      "category": "transport",
+      "createdAt": "2026-04-15T10:57:33.441Z"
+    },
+    {
+      "id": 53,
+      "georgian": "აფთიაქი",
+      "russian": "аптека",
+      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/pharmacy.jpg",
+      "category": "places",
+      "createdAt": "2026-04-15T10:57:33.441Z"
+    },
+    {
+      "id": 54,
+      "georgian": "პარკინგი",
+      "russian": "парковка",
+      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/parking.jpg",
+      "category": "city",
+      "createdAt": "2026-04-15T10:57:33.441Z"
+    },
+    {
+      "id": 55,
+      "georgian": "ზღვა",
+      "russian": "море",
+      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/sea.jpg",
+      "category": "nature",
+      "createdAt": "2026-04-15T10:57:33.441Z"
+    },
+    {
+      "id": 56,
+      "georgian": "მთა",
+      "russian": "гора",
+      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/mountain.jpg",
+      "category": "nature",
+      "createdAt": "2026-04-15T10:57:33.441Z"
+    },
+    {
+      "id": 57,
+      "georgian": "ქუჩა",
+      "russian": "улица",
+      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/street.jpg",
+      "category": "city",
+      "createdAt": "2026-04-15T10:57:33.441Z"
+    },
+    {
+      "id": 58,
+      "georgian": "ბაღი",
+      "russian": "сад",
+      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/garden.jpg",
+      "category": "nature",
+      "createdAt": "2026-04-15T10:57:33.441Z"
+    },
+    {
+      "id": 59,
+      "georgian": "რვეული",
+      "russian": "тетрадь",
+      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/notebook.jpg",
+      "category": "school",
+      "createdAt": "2026-04-15T10:57:33.441Z"
+    },
+    {
+      "id": 60,
+      "georgian": "დაფა",
+      "russian": "доска",
+      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/blackboard.jpg",
+      "category": "school",
+      "createdAt": "2026-04-15T10:57:33.441Z"
+    },
+    {
+      "id": 61,
+      "georgian": "სათამაშო",
+      "russian": "игрушка",
+      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/toy.jpg",
+      "category": "toys",
+      "createdAt": "2026-04-15T10:57:33.441Z"
+    },
+    {
+      "id": 62,
+      "georgian": "ბურთი",
+      "russian": "мяч",
+      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/ball.jpg",
+      "category": "toys",
+      "createdAt": "2026-04-15T10:57:33.441Z"
+    },
+    {
+      "id": 63,
+      "georgian": "თოჯინა",
+      "russian": "кукла",
+      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/doll.jpg",
+      "category": "toys",
+      "createdAt": "2026-04-15T10:57:33.441Z"
+    },
+    {
+      "id": 64,
+      "georgian": "ჩანთა",
+      "russian": "рюкзак",
+      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/backpack.jpg",
+      "category": "school",
+      "createdAt": "2026-04-15T10:57:33.441Z"
+    },
+    {
+      "id": 65,
+      "georgian": "ქალაქი",
+      "russian": "город",
+      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/city.jpg",
+      "category": "places",
+      "createdAt": "2026-04-15T10:57:33.441Z"
+    },
+    {
+      "id": 66,
+      "georgian": "სოფელი",
+      "russian": "деревня",
+      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/village.jpg",
+      "category": "places",
+      "createdAt": "2026-04-15T10:57:33.441Z"
+    },
+    {
+      "id": 67,
+      "georgian": "ჭერი",
+      "russian": "потолок",
+      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/ceiling.jpg",
+      "category": "home",
+      "createdAt": "2026-04-15T10:57:33.441Z"
+    },
+    {
+      "id": 68,
+      "georgian": "იატაკი",
+      "russian": "пол",
+      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/floor.jpg",
+      "category": "home",
+      "createdAt": "2026-04-15T10:57:33.441Z"
+    },
+    {
+      "id": 69,
+      "georgian": "სარკე",
+      "russian": "зеркало",
+      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/mirror.jpg",
+      "category": "home",
+      "createdAt": "2026-04-15T10:57:33.441Z"
+    },
+    {
+      "id": 70,
+      "georgian": "აბაზანა",
+      "russian": "ванна",
+      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/bathtub.jpg",
+      "category": "bathroom",
+      "createdAt": "2026-04-15T10:57:33.441Z"
+    },
+    {
+      "id": 71,
+      "georgian": "სამზარეულო",
+      "russian": "кухня",
+      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/kitchen.jpg",
+      "category": "home",
+      "createdAt": "2026-04-15T10:57:33.441Z"
+    },
+    {
+      "id": 72,
+      "georgian": "კედელი",
+      "russian": "стена",
+      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/wall.jpg",
+      "category": "home",
+      "createdAt": "2026-04-15T10:57:33.441Z"
+    },
+    {
+      "id": 73,
+      "georgian": "ხიდი",
+      "russian": "мост",
+      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/bridge.jpg",
+      "category": "city",
+      "createdAt": "2026-04-15T10:57:33.441Z"
+    },
+    {
+      "id": 74,
+      "georgian": "მდინარე",
+      "russian": "река",
+      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/river.jpg",
+      "category": "nature",
+      "createdAt": "2026-04-15T10:57:33.441Z"
+    },
+    {
+      "id": 75,
+      "georgian": "ტბა",
+      "russian": "озеро",
+      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/lake.jpg",
+      "category": "nature",
+      "createdAt": "2026-04-15T10:57:33.441Z"
+    },
+    {
+      "id": 76,
+      "georgian": "ტყე",
+      "russian": "лес",
+      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/forest.jpg",
+      "category": "nature",
+      "createdAt": "2026-04-15T10:57:33.441Z"
+    },
+    {
+      "id": 77,
+      "georgian": "ცა",
+      "russian": "небо",
+      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/sky.jpg",
+      "category": "nature",
+      "createdAt": "2026-04-15T10:57:33.441Z"
+    },
+    {
+      "id": 78,
+      "georgian": "წვიმა",
+      "russian": "дождь",
+      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/rain.jpg",
+      "category": "weather",
+      "createdAt": "2026-04-15T10:57:33.441Z"
+    },
+    {
+      "id": 79,
+      "georgian": "თოვლი",
+      "russian": "снег",
+      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/snow.jpg",
+      "category": "weather",
+      "createdAt": "2026-04-15T10:57:33.441Z"
+    },
+    {
+      "id": 80,
+      "georgian": "ქარი",
+      "russian": "ветер",
+      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/wind.jpg",
+      "category": "weather",
+      "createdAt": "2026-04-15T10:57:33.441Z"
+    },
+    {
+      "id": 81,
+      "georgian": "ოთახი",
+      "russian": "комната",
+      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/room.jpg",
+      "category": "home",
+      "createdAt": "2026-04-15T10:57:33.441Z"
+    },
+    {
+      "id": 82,
+      "georgian": "აივანი",
+      "russian": "балкон",
+      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/balcony.jpg",
+      "category": "home",
+      "createdAt": "2026-04-15T10:57:33.441Z"
+    },
+    {
+      "id": 83,
+      "georgian": "დერეფანი",
+      "russian": "коридор",
+      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/hallway.jpg",
+      "category": "home",
+      "createdAt": "2026-04-15T10:57:33.441Z"
+    },
+    {
+      "id": 84,
+      "georgian": "ავეჯი",
+      "russian": "мебель",
+      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/furniture.jpg",
+      "category": "home",
+      "createdAt": "2026-04-15T10:57:33.441Z"
+    }
+  ]
 }
