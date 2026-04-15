@@ -1015,14 +1015,30 @@
 
         if (isEditMode) {
           const updatedId = Number(selectedWord.id);
-          await loadWords();
-          const updatedWord = allWords.find(word => Number(word.id) === updatedId);
+          const updatedWordFromServer = result.word || {
+            ...selectedWord,
+            id: updatedId,
+            georgian,
+            russian,
+            category,
+            imageUrl
+          };
 
-          if (updatedWord) {
-            fillForm(updatedWord);
-          } else {
-            resetForm();
+          allWords = allWords.map(word =>
+            Number(word.id) === updatedId ? updatedWordFromServer : word
+          );
+
+          if (
+            openedCategory &&
+            String(updatedWordFromServer.category || "").trim().toLowerCase() !== openedCategory &&
+            Number(updatedId) === Number(selectedWord.id)
+          ) {
+            openedCategory = String(updatedWordFromServer.category || "").trim().toLowerCase() || null;
           }
+
+          renderCategoryOptions(updatedWordFromServer.category || "basic");
+          renderList();
+          fillForm(updatedWordFromServer);
         } else {
           resetForm();
           await loadWords();
