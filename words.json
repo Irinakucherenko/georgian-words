@@ -1,5 +1,5 @@
 {
-  "version": 29,
+  "version": 30,
   "words": [
     {
       "id": 2,
@@ -8,14 +8,6 @@
       "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/water.jpg",
       "category": "basic",
       "createdAt": "2026-04-11T12:02:00.000Z"
-    },
-    {
-      "id": 3,
-      "georgian": "პური",
-      "russian": "хлеб",
-      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/bread.jpg",
-      "category": "food",
-      "createdAt": "2026-04-11T12:03:00.000Z"
     },
     {
       "id": 4,
