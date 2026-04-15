@@ -1,5 +1,5 @@
 {
-  "version": 43,
+  "version": 44,
   "words": [
     {
       "id": 1,
@@ -158,7 +158,7 @@
       "georgian": "საბანი",
       "russian": "одеяло",
       "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/blanket.jpg",
-      "category": "bedroom",
+      "category": "home",
       "createdAt": "2026-04-15T10:57:33.441Z"
     },
     {
