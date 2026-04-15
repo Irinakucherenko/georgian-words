@@ -118,7 +118,7 @@
       "georgian": "ღუმელი",
       "russian": "духовка",
       "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/oven.jpg",
-      "category": "kitchen",
+      "category": "home",
       "createdAt": "2026-04-15T10:57:33.441Z"
     },
     {
@@ -302,7 +302,7 @@
       "georgian": "თეფში",
       "russian": "тарелка",
       "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/plate.jpg",
-      "category": "kitchen",
+      "category": "home",
       "createdAt": "2026-04-15T10:57:33.441Z"
     },
     {
@@ -310,7 +310,7 @@
       "georgian": "გაზქურა",
       "russian": "плита",
       "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/stove.jpg",
-      "category": "kitchen",
+      "category": "home",
       "createdAt": "2026-04-15T10:57:33.441Z"
     },
     {
@@ -350,7 +350,7 @@
       "georgian": "ჭიქა",
       "russian": "стакан",
       "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/glass.jpg",
-      "category": "kitchen",
+      "category": "home",
       "createdAt": "2026-04-15T10:57:33.441Z"
     },
     {
@@ -358,7 +358,7 @@
       "georgian": "მაცივარი",
       "russian": "холодильник",
       "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/fridge.jpg",
-      "category": "kitchen",
+      "category": "home",
       "createdAt": "2026-04-15T10:57:33.441Z"
     },
     {
@@ -366,7 +366,7 @@
       "georgian": "კოვზი",
       "russian": "ложка",
       "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/spoon.jpg",
-      "category": "kitchen",
+      "category": "home",
       "createdAt": "2026-04-15T10:57:33.441Z"
     },
     {
@@ -374,7 +374,7 @@
       "georgian": "ჩანგალი",
       "russian": "вилка",
       "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/fork.jpg",
-      "category": "kitchen",
+      "category": "home",
       "createdAt": "2026-04-15T10:57:33.441Z"
     },
     {
@@ -382,7 +382,7 @@
       "georgian": "დანა",
       "russian": "нож",
       "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/knife.jpg",
-      "category": "kitchen",
+      "category": "home",
       "createdAt": "2026-04-15T10:57:33.441Z"
     },
     {
