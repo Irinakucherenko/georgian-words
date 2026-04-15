@@ -1,5 +1,5 @@
 {
-  "version": 37,
+  "version": 38,
   "words": [
     {
       "id": 1,
@@ -126,7 +126,7 @@
       "georgian": "ნიჟარა",
       "russian": "раковина",
       "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/sink.jpg",
-      "category": "bathroom",
+      "category": "home",
       "createdAt": "2026-04-15T10:57:33.441Z"
     },
     {
