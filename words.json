@@ -1,5 +1,5 @@
 {
-  "version": 45,
+  "version": 46,
   "words": [
     {
       "id": 1,
@@ -645,7 +645,7 @@
       "id": 81,
       "georgian": "ოთახი",
       "russian": "комната",
-      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/room.jpg",
+      "imageUrl": "https://raw.githubusercontent.com/Irinakucherenko/georgian-words/main/images/living_room.jpg",
       "category": "home",
       "createdAt": "2026-04-15T10:57:33.441Z"
     },
